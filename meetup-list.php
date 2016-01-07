@@ -7,7 +7,7 @@ foreach ( $events as $event ) {
 		'<li><a href="%1$s">%2$s</a>; %3$s</li>',
 		esc_url( $event->event_url ),
 		strip_tags( $event->name ),
-		date( 'M d, g:ia', intval( $event->time/1000 + $event->utc_offset/1000 ) )
+		date( 'M d, g:ia', intval( $event->time / 1000 + $event->utc_offset / 1000 ) )
 	);
 }
 echo '</ul>';

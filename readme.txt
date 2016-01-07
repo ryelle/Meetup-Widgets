@@ -3,8 +3,8 @@ Contributors: ryelle
 Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=7OzM1TYh271yVnb30fI26d7BkYaEcnM9pmQnT42lWbEm7BsLORp4G_2UTRW&dispatch=5885d80a13c0db1f8e263663d3faee8d4026841ac68a446f69dad17fb2afeca3
 Tags: meetup, meetups, meetup.com, widget
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 2.2.0
+Tested up to: 4.4.1
+Stable tag: 2.2.1
 
 Adds widgets displaying information from a meetup.com group.
 
@@ -45,6 +45,11 @@ If your meetup group is set up at meetup.com/`[group URL name]`, the part after 
 2. Example of the upcoming event list widget. Lists a set number of events from the group you specify, title & date.
 
 == Upgrade Notice ==
+
+= 2.2.1 =
+
+* Code cleanup
+* Use `__construct` for the widget's parent constructor (gets rid of the deprecation warning)
 
 = 2.2 =
 * Fix bug where widgets could only be used once per page, due to `load_template` calling `require_once` by default.
