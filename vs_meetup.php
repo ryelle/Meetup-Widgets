@@ -51,3 +51,5 @@ add_action(
 		return register_widget( 'VsMeetUserListWidget' );
 	}
 );
+
+require_once( 'blocks/blocks.php' );
