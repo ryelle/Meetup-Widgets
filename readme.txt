@@ -1,10 +1,10 @@
 === Meetup Widgets ===
 Contributors: ryelle
-Donate link: https://www.paypal.com/us/cgi-bin/webscr?cmd=_flow&SESSION=7OzM1TYh271yVnb30fI26d7BkYaEcnM9pmQnT42lWbEm7BsLORp4G_2UTRW&dispatch=5885d80a13c0db1f8e263663d3faee8d4026841ac68a446f69dad17fb2afeca3
-Tags: meetup, meetups, meetup.com, widget
-Requires at least: 3.3
-Tested up to: 4.4.1
-Stable tag: 2.2.1
+Tags: meetup, meetups, meetup.com, widget,
+Requires at least: 4.8
+Requires PHP: 5.6
+Tested up to: 4.9
+Stable tag: 2.3.0
 
 Adds widgets displaying information from a meetup.com group.
 
@@ -12,14 +12,17 @@ Adds widgets displaying information from a meetup.com group.
 
 For use with a [Meetup.com](http://meetup.com) group.
 
-This plugin creates two widgets: one a list of events from a meetup group (by ID or URL name, for multiple groups use IDs); the other shows details about single event (by ID) with a link to RSVP - using OAuth if keys are specified, otherwise just a link to the event on meetup.com. Does require at least an API key (which it asks for on the settings page).
+This plugin creates three widgets:
+
+1. A list of events from a meetup group (by ID or URL name, for multiple groups use IDs)
+2. Details of a single event (by ID) with a link to RSVP - using OAuth if enabled & keys are specified, otherwise just a link to the event on meetup.com.
 
 == Installation ==
 
 1. Extract `meetup-widgets.zip` to `meetup-widgets` & Upload that folder to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Set up your API key (and optional OAuth key & secret) in your General Settings screen.
-1. Use your new widgets!
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Set up your API key (and optional OAuth key & secret) in your General Settings screen.
+4. Use your new widgets!
 
 == Frequently Asked Questions ==
 
@@ -37,7 +40,7 @@ It's in the event page's URL: http://www.meetup.com/`[group ID]`/events/`[event 
 
 = How do I find my group ID? =
 
-If your meetup group is set up at meetup.com/`[group URL name]`, the part after `meetup.com/` is one of your group identifiers (the URL name). The other possible identifier is your group's ID number. 
+If your meetup group is set up at meetup.com/`[group URL name]`, the part after `meetup.com/` is one of your group identifiers (the URL name). The other possible identifier is your group's ID number.
 
 == Screenshots ==
 
@@ -62,7 +65,7 @@ If your meetup group is set up at meetup.com/`[group URL name]`, the part after 
 
 = 2.1 =
 * At the suggestion of [Harlan Harris](http://datacommunitydc.org/), I investigated using multiple groups in one widget - happily, it worked by default. I've adjusted the validation in the widget to allow multiple group IDs (does need to be the ID numbers, not URL name).
-* Add a new widget! Meetup User Events displays all events for a user, specifically the user who created the API key. 
+* Add a new widget! Meetup User Events displays all events for a user, specifically the user who created the API key.
 * Use `get_template_part` to allow theme developers to create their own displays. Documentation will be available on [my website](http://redradar.net/category/plugins/meetup-widgets/) shortly.
 
 = 2.0.2 =
