@@ -10,6 +10,10 @@
  * Date: 01.06.2016
  */
 
+if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
+	define( 'VSMEET_TEMPLATE_DIR',  dirname( __FILE__ ) . '/templates/' );
+}
+
 /**
  * If the class exists we've declared it in another Meetup integration plugin,
  * and should not do so twice.
@@ -116,11 +120,21 @@ function meetup_widgets_start() {
 
 } add_action( 'init', 'meetup_widgets_start' );
 
-// Register widgets
-add_action( 'widgets_init', create_function( '', 'return register_widget("VsMeetSingleWidget");' ) );
-add_action( 'widgets_init', create_function( '', 'return register_widget("VsMeetListWidget");' ) );
-add_action( 'widgets_init', create_function( '', 'return register_widget("VsMeetUserListWidget");' ) );
-
 function vsmw_need_oauth() {
 	echo '<div id="message" class="updated"><p>Some functionality of <strong>Meetup Login</strong> requires <strong><a href="http://php.net/manual/en/book.oauth.php">OAuth</a></strong>, which is not detected on this server. RSVPing from this site is disabled - RSVP links will instead bring you to the event on Meetup.com.</p></div>';
 }
+
+require_once( 'widgets/single.php' );
+add_action( 'widgets_init', function() {
+	return register_widget( "VsMeetSingleWidget" );
+} );
+
+require_once( 'widgets/group-list.php' );
+add_action( 'widgets_init', function() {
+	return register_widget( "VsMeetListWidget" );
+} );
+
+require_once( 'widgets/user-list.php' );
+add_action( 'widgets_init', function() {
+	return register_widget( "VsMeetUserListWidget" );
+} );

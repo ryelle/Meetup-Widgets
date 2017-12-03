@@ -110,8 +110,9 @@ class VsMeetWidget extends VsMeet {
 
 			if ( empty( $out ) ) {
 				// grab the template included in plugin
-				if ( file_exists( dirname( __FILE__ ) . '/meetup-single.php' ) ) {
-					load_template( dirname( __FILE__ ) . '/meetup-single.php', false );
+				$template = VSMEET_TEMPLATE_DIR . '/meetup-single.php';
+				if ( file_exists( $template ) ) {
+					load_template( $template, false );
 				}
 				$out = ob_get_contents();
 			}
@@ -161,8 +162,9 @@ class VsMeetWidget extends VsMeet {
 
 			if ( empty( $out ) ) {
 				// grab the template included in plugin
-				if ( file_exists( dirname( __FILE__ ) . '/meetup-list.php' ) ) {
-					load_template( dirname( __FILE__ ) . '/meetup-list.php', false );
+				$template = VSMEET_TEMPLATE_DIR . '/meetup-list.php';
+				if ( file_exists( $template ) ) {
+					load_template( $template, false );
 				}
 				$out = ob_get_contents();
 			}
@@ -213,8 +215,9 @@ class VsMeetWidget extends VsMeet {
 
 			if ( empty( $out ) ) {
 				// grab the template included in plugin
-				if ( file_exists( dirname( __FILE__ ) . '/meetup-list.php' ) ) {
-					load_template( dirname( __FILE__ ) . '/meetup-list.php', false );
+				$template = VSMEET_TEMPLATE_DIR . '/meetup-list.php';
+				if ( file_exists( $template ) ) {
+					load_template( $template, false );
 				}
 				$out = ob_get_contents();
 			}
@@ -356,194 +359,3 @@ class VsMeetWidget extends VsMeet {
 		echo '</div> </body> </html>';
 	}
 }
-
-
-/**
- * VsMeetSingle extends the widget class to create a single-event widget with RSVP functionality.
- */
-class VsMeetSingleWidget extends WP_Widget {
-	/** constructor */
-	function VsMeetSingleWidget() {
-		parent::__construct( false, $name = __( 'Meetup Single Event', 'vsmeet_domain' ), array( 'description' => __( 'Display a single event.', 'vsmeet_domain' ) ) );
-	}
-
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
-		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$id = $instance['id'];
-		echo $before_widget;
-		if ( $title ) {
-			echo $before_title . $title . $after_title;
-		}
-		if ( $id ) {
-			$vsm = new VsMeetWidget();
-			$html = $vsm->get_single_event( $id );
-			echo $html;
-		}
-		echo $after_widget;
-	}
-
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['id'] = strip_tags( $new_instance['id'] );
-
-		return $instance;
-	}
-
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		if ( $instance ) {
-			$title = esc_attr( $instance['title'] );
-			$id = esc_attr( $instance['id'] );
-		} else {
-			$title = '';
-			$id = '';
-		}
-		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
-		</label></p>
-		<p><label for="<?php echo $this->get_field_id( 'id' ); ?>">
-			<?php _e( 'Event ID:', 'vsmeet_domain' ); ?>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
-		</label></p>
-	<?php }
-} // class VsMeetSingleWidget
-
-/**
- * VsMeetList extends the widget class to create an event list for a specific meetup group.
- */
-class VsMeetListWidget extends WP_Widget {
-	/** constructor */
-	function VsMeetListWidget() {
-		parent::__construct( false, $name = __( 'Meetup List Event', 'vsmeet_domain' ), array( 'description' => __( 'Display a list of events.', 'vsmeet_domain' ) ) );
-	}
-
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
-		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$id = $instance['id']; // meetup ID or URL name
-		$limit = intval( $instance['limit'] );
-
-		echo $before_widget;
-		if ( $title ) {
-			echo $before_title . $title . $after_title;
-		}
-		if ( $id ) {
-			$vsm = new VsMeetWidget();
-			$html = $vsm->get_group_events( $id, $limit );
-			echo $html;
-		}
-		echo $after_widget;
-	}
-
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		if ( preg_match( '/[a-zA-Z]/', $new_instance['id'] ) ) {
-			$instance['id'] = sanitize_title( $new_instance['id'] );
-		} else {
-			$instance['id'] = str_replace( ' ', '', $new_instance['id'] );
-		}
-		$instance['limit'] = intval( $new_instance['limit'] );
-
-		return $instance;
-	}
-
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		if ( $instance ) {
-			$title = esc_attr( $instance['title'] );
-			$id = esc_attr( $instance['id'] ); // -> it's a name if it contains any a-zA-z, otherwise ID
-			$limit = intval( $instance['limit'] );
-		} else {
-			$title = '';
-			$id = '';
-			$limit = 5;
-		}
-		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
-		</label></p>
-		<p><label for="<?php echo $this->get_field_id( 'id' ); ?>">
-			<?php _e( 'Group ID:', 'vsmeet_domain' ); ?>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
-		</label></p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-				<?php _e( 'Number of events to show:', 'vsmeet_domain' ); ?>
-			</label>
-			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
-		</p>
-	<?php }
-} // class VsMeetListWidget
-
-/**
- * VsMeetUserList extends the widget class to create an event list for a specific meetup group.
- */
-class VsMeetUserListWidget extends WP_Widget {
-	/** constructor */
-	function VsMeetUserListWidget() {
-		parent::__construct( false, __( 'Meetup User Events', 'vsmeet_domain' ), array( 'description' => __( 'Display a list of events for a single user.', 'vsmeet_domain' ), 'classname' => 'widget_meetup_user_list' ) );
-	}
-
-	/** @see WP_Widget::widget */
-	function widget( $args, $instance ) {
-		extract( $args );
-		$title = apply_filters( 'widget_title', $instance['title'] );
-		$limit = absint( $instance['limit'] );
-
-		echo $before_widget;
-		if ( $title ) {
-			echo $before_title . $title . $after_title;
-		}
-		$vsm = new VsMeetWidget();
-		$html = $vsm->get_user_events( $limit );
-		echo $html;
-		echo $after_widget;
-	}
-
-	/** @see WP_Widget::update */
-	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
-		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['limit'] = absint( $new_instance['limit'] );
-
-		// remove caching of old event
-		if ( ! empty( $old_instance['id'] ) ) {
-			delete_transient( 'vsmeet_user_events_' . $old_instance['id'] );
-		}
-
-		return $instance;
-	}
-
-	/** @see WP_Widget::form */
-	function form( $instance ) {
-		if ( $instance ) {
-			$title = esc_attr( $instance['title'] );
-			$limit = absint( $instance['limit'] );
-		} else {
-			$title = '';
-			$limit = 5;
-		}
-		?>
-		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
-			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
-		</label></p>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-				<?php _e( 'Number of events to show:', 'vsmeet_domain' ); ?>
-			</label>
-			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
-		</p>
-		<p class="description">This widget automatically pulls events from the user who created the API key.</p>
-	<?php }
-} // class VsMeetUserListWidget
