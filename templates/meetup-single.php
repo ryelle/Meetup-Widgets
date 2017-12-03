@@ -15,7 +15,7 @@ if ( isset( $event->time ) ) {
 <p class="event-rsvp"><span class="rsvp-count"><?php echo absint( $event->yes_rsvp_count ) .' '. _n( 'attendee', 'attendees', $event->yes_rsvp_count ); ?></span>
 
 <?php
-if ( ! empty( $options['vs_meetup_key'] ) && ! empty( $options['vs_meetup_secret'] ) && class_exists( 'OAuth' ) ) {
+if ( vsmeet_can_rsvp_oauth() ) {
 	echo "<span class='rsvp-add'><a href='#' onclick='javascript:window.open(\"{$event->callback_url}&event=$id\",\"authenticate\",\"width=400,height=600\");'>RSVP?</a></span>";
 } else {
 	echo '<span class="rsvp-add"><a href="'.$event->event_url.'">RSVP?</a></span>';
