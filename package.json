@@ -1,0 +1,20 @@
+{
+  "name": "meetup-widgets",
+  "version": "2.3.0",
+  "description": "Adds widgets displaying information from a meetup.com group.",
+  "main": "index.js",
+  "scripts": {
+    "build": "NODE_ENV=production babel blocks/src/index.js --out-file blocks/build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryelle/Meetup-Widgets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryelle/Meetup-Widgets/issues"
+  },
+  "homepage": "https://github.com/ryelle/Meetup-Widgets#readme"
+}
