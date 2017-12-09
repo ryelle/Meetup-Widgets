@@ -4,8 +4,15 @@
  */
 class VsMeetListWidget extends WP_Widget {
 	/** constructor */
-	function VsMeetListWidget() {
-		parent::__construct( false, $name = __( 'Meetup List Event', 'vsmeet_domain' ), array( 'description' => __( 'Display a list of events.', 'vsmeet_domain' ) ) );
+	function __construct() {
+		parent::__construct(
+			'vsm-group-list',
+			__( 'Meetup List Event', 'vsmeet_domain' ),
+			array(
+				'classname' => 'widget_meetup_group_list',
+				'description' => __( 'Display a list of events.', 'vsmeet_domain' ),
+			)
+		);
 	}
 
 	/** @see WP_Widget::widget */
@@ -68,4 +75,4 @@ class VsMeetListWidget extends WP_Widget {
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
 		</p>
 	<?php }
-} // class VsMeetListWidget
+}

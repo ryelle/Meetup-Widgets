@@ -4,8 +4,15 @@
  */
 class VsMeetSingleWidget extends WP_Widget {
 	/** constructor */
-	function VsMeetSingleWidget() {
-		parent::__construct( false, $name = __( 'Meetup Single Event', 'vsmeet_domain' ), array( 'description' => __( 'Display a single event.', 'vsmeet_domain' ) ) );
+	function __construct() {
+		parent::__construct(
+			'vsm-single-event',
+			__( 'Meetup Single Event', 'vsmeet_domain' ),
+			array(
+				'classname' => 'widget_meetup_single_event',
+				'description' => __( 'Display a single event.', 'vsmeet_domain' ),
+			)
+		);
 	}
 
 	/** @see WP_Widget::widget */
@@ -53,4 +60,4 @@ class VsMeetSingleWidget extends WP_Widget {
 			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
 		</label></p>
 	<?php }
-} // class VsMeetSingleWidget
+}

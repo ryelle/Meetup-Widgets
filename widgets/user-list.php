@@ -4,8 +4,15 @@
  */
 class VsMeetUserListWidget extends WP_Widget {
 	/** constructor */
-	function VsMeetUserListWidget() {
-		parent::__construct( false, __( 'Meetup User Events', 'vsmeet_domain' ), array( 'description' => __( 'Display a list of events for a single user.', 'vsmeet_domain' ), 'classname' => 'widget_meetup_user_list' ) );
+	function __construct() {
+		parent::__construct(
+			'vsm-user-list',
+			__( 'Meetup User Events', 'vsmeet_domain' ),
+			array(
+				'classname' => 'widget_meetup_user_list',
+				'description' => __( 'Display a list of events for a single user.', 'vsmeet_domain' ),
+			)
+		);
 	}
 
 	/** @see WP_Widget::widget */
@@ -60,4 +67,4 @@ class VsMeetUserListWidget extends WP_Widget {
 		</p>
 		<p class="description">This widget automatically pulls events from the user who created the API key.</p>
 	<?php }
-} // class VsMeetUserListWidget
+}
