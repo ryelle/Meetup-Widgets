@@ -18,8 +18,8 @@ if ( isset( $event->time ) ) {
 
 <?php
 if ( isset( $event->venue ) ) {
-	$venue = $event->venue->name.' '.$event->venue->address_1 . ', ' . $event->venue->city . ', ' . $event->venue->state;
-	echo "<p class='event-location'>Location: <a href='http://maps.google.com/maps?q=$venue+%28".$event->venue->name."%29&z=17'>$venue</a></p>";
+	$venue = $event->venue->name . ' ' . $event->venue->address_1 . ', ' . $event->venue->city . ', ' . $event->venue->state;
+	echo "<p class='event-location'>Location: <a href='http://maps.google.com/maps?q=$venue+%28" . $event->venue->name . "%29&z=17'>$venue</a></p>";
 } else {
 	$venue = apply_filters( 'vsm_no_location_text', 'Location: TBA' );
 	if ( ! empty( $venue ) ) {

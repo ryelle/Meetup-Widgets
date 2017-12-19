@@ -11,7 +11,7 @@
  */
 
 if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
-	define( 'VSMEET_TEMPLATE_DIR',  dirname( __FILE__ ) . '/templates/' );
+	define( 'VSMEET_TEMPLATE_DIR', dirname( __FILE__ ) . '/templates/' );
 }
 
 /**
@@ -22,24 +22,23 @@ if ( ! class_exists( 'VsMeet' ) ) :
 
 	class VsMeet {
 		/* global variables */
-		private $api_url = 'http://api.meetup.com/';
+		private $api_url   = 'http://api.meetup.com/';
 		protected $api_key = '';
 
 		public function __construct( $var = '' ) {
-			$options = get_option( 'vs_meet_options' );
+			$options       = get_option( 'vs_meet_options' );
 			$this->api_key = $options['vs_meetup_api_key'];
 
 			register_activation_hook( __FILE__, array( $this, 'install' ) );
 
 			// TODO deal with translations.
-			//load_plugin_textdomain('vsmeet_domain');
-
+			// load_plugin_textdomain('vsmeet_domain');
 			// add admin page & options
-			add_filter( 'admin_init' , array( $this, 'register_fields' ) );
+			add_filter( 'admin_init', array( $this, 'register_fields' ) );
 		}
 
 		public function install() {
-			//nothing here yet, as there's really nothing to 'install' that isn't covered by __construct
+			// nothing here yet, as there's really nothing to 'install' that isn't covered by __construct
 		}
 
 		function register_fields() {
@@ -47,7 +46,7 @@ if ( ! class_exists( 'VsMeet' ) ) :
 
 			add_settings_section( 'vs_meet', 'Meetup API Settings', array( $this, 'setting_section_vs_meetup' ), 'general' );
 
-			add_settings_field( 'vs_meetup_api_key', sprintf( '<label for="vs_meetup_api_key">%s</label>', __( 'Meetup API Key:' , 'vsmeet_domain' ) ), array( $this, 'setting_vs_meetup_api_key' ) , 'general', 'vs_meet' );
+			add_settings_field( 'vs_meetup_api_key', sprintf( '<label for="vs_meetup_api_key">%s</label>', __( 'Meetup API Key:', 'vsmeet_domain' ) ), array( $this, 'setting_vs_meetup_api_key' ), 'general', 'vs_meet' );
 
 		}
 
@@ -68,6 +67,7 @@ if ( ! class_exists( 'VsMeet' ) ) :
 
 		/**
 		 * Sanitize and validate input.
+		 *
 		 * @param array $input an array to sanitize
 		 * @return array a valid array.
 		 */
@@ -93,16 +93,22 @@ function meetup_widgets_start() {
 } add_action( 'init', 'meetup_widgets_start' );
 
 require_once( 'widgets/single.php' );
-add_action( 'widgets_init', function() {
-	return register_widget( "VsMeetSingleWidget" );
-} );
+add_action(
+	'widgets_init', function() {
+		return register_widget( 'VsMeetSingleWidget' );
+	}
+);
 
 require_once( 'widgets/group-list.php' );
-add_action( 'widgets_init', function() {
-	return register_widget( "VsMeetListWidget" );
-} );
+add_action(
+	'widgets_init', function() {
+		return register_widget( 'VsMeetListWidget' );
+	}
+);
 
 require_once( 'widgets/user-list.php' );
-add_action( 'widgets_init', function() {
-	return register_widget( "VsMeetUserListWidget" );
-} );
+add_action(
+	'widgets_init', function() {
+		return register_widget( 'VsMeetUserListWidget' );
+	}
+);

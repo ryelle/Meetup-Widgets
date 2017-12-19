@@ -5,12 +5,12 @@
  */
 
 class VsMeetWidget extends VsMeet {
-	private $api_url = 'http://api.meetup.com/';
-	private $base_url = 'http://api.meetup.com/2/events/';
+	private $api_url   = 'http://api.meetup.com/';
+	private $base_url  = 'http://api.meetup.com/2/events/';
 	protected $api_key = '';
 
 	public function __construct() {
-		$options = get_option( 'vs_meet_options' );
+		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
 
 		parent::__construct();
@@ -34,8 +34,8 @@ class VsMeetWidget extends VsMeet {
 		);
 
 		if ( false === $event ) {
-			$args = wp_parse_args( $args, $defaults );
-			$url = add_query_arg( $args, $this->base_url );
+			$args           = wp_parse_args( $args, $defaults );
+			$url            = add_query_arg( $args, $this->base_url );
 			$event_response = wp_remote_get( $url );
 			if ( is_wp_error( $event_response ) ) {
 				if ( WP_DEBUG ) {
@@ -73,12 +73,12 @@ class VsMeetWidget extends VsMeet {
 	 */
 	public function get_single_event( $id ) {
 		global $event;
-		$options = get_option( 'vs_meet_options' );
+		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
-		$out = '';
+		$out           = '';
 
 		if ( ! empty( $this->api_key ) ) {
-			$event = $this->get_data( array( 'event_id' => $id ), 'vsm_single_event_'.$id );
+			$event = $this->get_data( array( 'event_id' => $id ), 'vsm_single_event_' . $id );
 			if ( ! $event ) {
 				return;
 			}
@@ -114,20 +114,20 @@ class VsMeetWidget extends VsMeet {
 	/**
 	 * Get the HTML for a group's events via Meetup API
 	 *
-	 * @param string  $id    Meetup ID or URL name
-	 * @param string  $limit Number of events to display, default 5.
+	 * @param string $id    Meetup ID or URL name
+	 * @param string $limit Number of events to display, default 5.
 	 *
 	 * @return string Event list formatted for display in widget
 	 */
 	public function get_group_events( $id, $limit = 5 ) {
 		global $events;
-		$options = get_option( 'vs_meet_options' );
+		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
 
 		if ( ! empty( $this->api_key ) ) {
 			$args = array(
 				'status' => 'upcoming',
-				'page' => $limit,
+				'page'   => $limit,
 			);
 			if ( preg_match( '/[a-zA-Z]/', $id ) ) {
 				$args['group_urlname'] = $id;
@@ -171,15 +171,15 @@ class VsMeetWidget extends VsMeet {
 	/**
 	 * Get user's list of events
 	 *
-	 * @param string  $id     User ID
-	 * @param string  $limit  Number of events to display, default 5.
-	 * @param string  $rsvp   Only return events with this RSVP status (can only be set to 'yes' in UI)
+	 * @param string $id     User ID
+	 * @param string $limit  Number of events to display, default 5.
+	 * @param string $rsvp   Only return events with this RSVP status (can only be set to 'yes' in UI)
 	 *
 	 * @return string Event list formatted for display in widget
 	 */
 	public function get_user_events( $limit = 5 ) {
 		global $events;
-		$options = get_option( 'vs_meet_options' );
+		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
 
 		if ( ! empty( $this->api_key ) ) {

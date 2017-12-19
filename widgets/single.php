@@ -9,7 +9,7 @@ class VsMeetSingleWidget extends WP_Widget {
 			'vsm-single-event',
 			__( 'Meetup Single Event', 'vsmeet_domain' ),
 			array(
-				'classname' => 'widget_meetup_single_event',
+				'classname'   => 'widget_meetup_single_event',
 				'description' => __( 'Display a single event.', 'vsmeet_domain' ),
 			)
 		);
@@ -19,13 +19,13 @@ class VsMeetSingleWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		$id = $instance['id'];
+		$id    = $instance['id'];
 		echo $before_widget;
 		if ( $title ) {
 			echo $before_title . $title . $after_title;
 		}
 		if ( $id ) {
-			$vsm = new VsMeetWidget();
+			$vsm  = new VsMeetWidget();
 			$html = $vsm->get_single_event( $id );
 			echo $html;
 		}
@@ -34,9 +34,9 @@ class VsMeetSingleWidget extends WP_Widget {
 
 	/** @see WP_Widget::update */
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
+		$instance          = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
-		$instance['id'] = strip_tags( $new_instance['id'] );
+		$instance['id']    = strip_tags( $new_instance['id'] );
 
 		return $instance;
 	}
@@ -45,10 +45,10 @@ class VsMeetSingleWidget extends WP_Widget {
 	function form( $instance ) {
 		if ( $instance ) {
 			$title = esc_attr( $instance['title'] );
-			$id = esc_attr( $instance['id'] );
+			$id    = esc_attr( $instance['id'] );
 		} else {
 			$title = '';
-			$id = '';
+			$id    = '';
 		}
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
@@ -59,5 +59,6 @@ class VsMeetSingleWidget extends WP_Widget {
 			<?php _e( 'Event ID:', 'vsmeet_domain' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
 		</label></p>
-	<?php }
+	<?php
+	}
 }

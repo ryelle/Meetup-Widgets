@@ -9,7 +9,7 @@ class VsMeetListWidget extends WP_Widget {
 			'vsm-group-list',
 			__( 'Meetup List Event', 'vsmeet_domain' ),
 			array(
-				'classname' => 'widget_meetup_group_list',
+				'classname'   => 'widget_meetup_group_list',
 				'description' => __( 'Display a list of events.', 'vsmeet_domain' ),
 			)
 		);
@@ -19,7 +19,7 @@ class VsMeetListWidget extends WP_Widget {
 	function widget( $args, $instance ) {
 		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
-		$id = $instance['id']; // meetup ID or URL name
+		$id    = $instance['id']; // meetup ID or URL name
 		$limit = intval( $instance['limit'] );
 
 		echo $before_widget;
@@ -27,7 +27,7 @@ class VsMeetListWidget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		if ( $id ) {
-			$vsm = new VsMeetWidget();
+			$vsm  = new VsMeetWidget();
 			$html = $vsm->get_group_events( $id, $limit );
 			echo $html;
 		}
@@ -36,7 +36,7 @@ class VsMeetListWidget extends WP_Widget {
 
 	/** @see WP_Widget::update */
 	function update( $new_instance, $old_instance ) {
-		$instance = $old_instance;
+		$instance          = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		if ( preg_match( '/[a-zA-Z]/', $new_instance['id'] ) ) {
 			$instance['id'] = sanitize_title( $new_instance['id'] );
@@ -52,11 +52,11 @@ class VsMeetListWidget extends WP_Widget {
 	function form( $instance ) {
 		if ( $instance ) {
 			$title = esc_attr( $instance['title'] );
-			$id = esc_attr( $instance['id'] ); // -> it's a name if it contains any a-zA-z, otherwise ID
+			$id    = esc_attr( $instance['id'] ); // -> it's a name if it contains any a-zA-z, otherwise ID
 			$limit = intval( $instance['limit'] );
 		} else {
 			$title = '';
-			$id = '';
+			$id    = '';
 			$limit = 5;
 		}
 		?>
@@ -74,5 +74,6 @@ class VsMeetListWidget extends WP_Widget {
 			</label>
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
 		</p>
-	<?php }
+	<?php
+	}
 }
