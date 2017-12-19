@@ -25,7 +25,7 @@ class VsMeetSingleWidget extends WP_Widget {
 			echo $before_title . $title . $after_title;
 		}
 		if ( $id ) {
-			$vsm  = new VsMeetWidget();
+			$vsm  = new Meetup_Widget();
 			$html = $vsm->get_single_event( $id );
 			echo $html;
 		}

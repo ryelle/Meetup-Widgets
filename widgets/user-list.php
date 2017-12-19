@@ -25,7 +25,7 @@ class VsMeetUserListWidget extends WP_Widget {
 		if ( $title ) {
 			echo $before_title . $title . $after_title;
 		}
-		$vsm  = new VsMeetWidget();
+		$vsm  = new Meetup_Widget();
 		$html = $vsm->get_user_events( $limit );
 		echo $html;
 		echo $after_widget;

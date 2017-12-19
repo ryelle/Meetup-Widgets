@@ -1,10 +1,14 @@
 <?php
 /**
- * VsMeetWidget
- * All widget info for VsMeet (including widgets themselves)
+ * All the logic for fetching and displaying Meetup.com data
+ *
+ * @package Meetup_Widgets
  */
 
-class VsMeetWidget extends VsMeet {
+/**
+ * Class container for requesting & displaying meetup.com data
+ */
+class Meetup_Widget {
 	private $api_url   = 'http://api.meetup.com/';
 	private $base_url  = 'http://api.meetup.com/2/events/';
 	protected $api_key = '';
@@ -12,17 +16,14 @@ class VsMeetWidget extends VsMeet {
 	public function __construct() {
 		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
-
-		parent::__construct();
 	}
 
 	/**
 	 * Given arguments & a transient name, grab data from the events API
 	 *
-	 * @param  $args       array   Query params to send to events.json call
-	 * @param  $transient  string  The transient name (if empty, no transient stored)
-	 *
-	 * @return  array  Event data (single event or list)
+	 * @param array  $args       Query params to send to events.json call.
+	 * @param string $transient  The transient name (if empty, no transient stored).
+	 * @return array Event data (single event or list)
 	 */
 	public function get_data( $args, $transient = '' ) {
 		if ( $transient ) {
