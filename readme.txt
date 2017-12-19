@@ -49,6 +49,7 @@ If your meetup group is set up at meetup.com/`[group URL name]`, the part after 
 = 3.0.0 =
 
 * Removal of OAuth
+* Refactor widgets into new `widgets/*` files, update code
 
 = 2.2.1 =
 
