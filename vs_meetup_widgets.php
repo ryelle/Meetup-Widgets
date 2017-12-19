@@ -5,29 +5,15 @@
  */
 
 class VsMeetWidget extends VsMeet {
-	private $req_url = 'http://api.meetup.com/oauth/request/';
-	private $authurl = 'http://www.meetup.com/authorize/';
-	private $acc_url = 'http://api.meetup.com/oauth/access/';
 	private $api_url = 'http://api.meetup.com/';
-	private $callback_url = '';
 	private $base_url = 'http://api.meetup.com/2/events/';
-
-	private $key = '';
-	private $secret = '';
 	protected $api_key = '';
 
 	public function __construct() {
 		$options = get_option( 'vs_meet_options' );
-		$this->key = $options['vs_meetup_key'];
-		$this->secret = $options['vs_meetup_secret'];
 		$this->api_key = $options['vs_meetup_api_key'];
-		$this->callback_url = admin_url( 'admin-ajax.php' ) . '?action=meetup_event';
 
 		parent::__construct();
-
-		// add login function to ajax requests
-		add_action( 'wp_ajax_nopriv_meetup_event', array( $this, 'meetup_event_popup' ) );
-		add_action( 'wp_ajax_meetup_event', array( $this, 'meetup_event_popup' ) );
 	}
 
 	/**
@@ -79,7 +65,7 @@ class VsMeetWidget extends VsMeet {
 	}
 
 	/**
-	 * Get a single event, with a link to RSVP (OAuth, new tiny window).
+	 * Get a single event, with a link to RSVP.
 	 *
 	 * @param string $id Event ID
 	 *
@@ -99,8 +85,6 @@ class VsMeetWidget extends VsMeet {
 
 			ob_start();
 
-			// We want the callback URL in the template, passing it in via the global $event is easiest.
-			$event->callback_url = $this->callback_url;
 			$template = '';
 			if ( isset( $event->group ) && isset( $event->group->urlname ) ) {
 				$template = $event->group->urlname;
@@ -229,21 +213,4 @@ class VsMeetWidget extends VsMeet {
 		}
 		return $out;
 	}
-
-	/**
-	 * Create the event RSVP popup
-	 */
-	function meetup_event_popup() {
-		// grab the template included in plugin
-		$template = VSMEET_TEMPLATE_DIR . '/oauth.php';
-		if ( file_exists( $template ) ) {
-			load_template( $template, false );
-		}
-	}
-}
-
-function vsmeet_can_rsvp_oauth() {
-	return ! empty( $options['vs_meetup_key'] )
-		&& ! empty( $options['vs_meetup_secret'] )
-		&& class_exists( 'OAuth' );
 }

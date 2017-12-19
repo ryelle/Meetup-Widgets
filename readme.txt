@@ -15,13 +15,14 @@ For use with a [Meetup.com](http://meetup.com) group.
 This plugin creates three widgets:
 
 1. A list of events from a meetup group (by ID or URL name, for multiple groups use IDs)
-2. Details of a single event (by ID) with a link to RSVP - using OAuth if enabled & keys are specified, otherwise just a link to the event on meetup.com.
+2. A list of upcoming events for the API key's owner.
+3. Details of a single event (by ID) with a link to RSVP.
 
 == Installation ==
 
 1. Extract `meetup-widgets.zip` to `meetup-widgets` & Upload that folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Set up your API key (and optional OAuth key & secret) in your General Settings screen.
+3. Set up your API key in your General Settings screen.
 4. Use your new widgets!
 
 == Frequently Asked Questions ==
@@ -29,10 +30,6 @@ This plugin creates three widgets:
 = How do I find my API key? =
 
 Log in to your Meetup.com account, then visit the [Getting an API Key](http://www.meetup.com/meetup_api/key/) page.
-
-= How do I find my OAuth key & secret? =
-
-You'll need to create an OAuth consumer for your website. Visit [Your OAuth Consumers](http://www.meetup.com/meetup_api/oauth_consumers/) for more information & to get started.
 
 = How do I find my event ID? =
 
@@ -44,10 +41,14 @@ If your meetup group is set up at meetup.com/`[group URL name]`, the part after 
 
 == Screenshots ==
 
-1. Example of the single event detail widget, shows title, date, an excerpt of the description, number of currently-rsvp'd attendees, a link to RSVP (through OAuth if configured), and the location (linking to a google map).
+1. Example of the single event detail widget, shows title, date, an excerpt of the description, number of currently-rsvp'd attendees, a link to RSVP, and the location (linking to a google map).
 2. Example of the upcoming event list widget. Lists a set number of events from the group you specify, title & date.
 
 == Upgrade Notice ==
+
+= 3.0.0 =
+
+* Removal of OAuth
 
 = 2.2.1 =
 

@@ -12,14 +12,9 @@ if ( isset( $event->time ) ) {
 <p class="event-date"><?php echo $date; ?></p>
 <?php endif; ?>
 <p class="event-summary"><?php echo wp_trim_words( strip_tags( $event->description ), 20 ); ?></p>
-<p class="event-rsvp"><span class="rsvp-count"><?php echo absint( $event->yes_rsvp_count ) .' '. _n( 'attendee', 'attendees', $event->yes_rsvp_count ); ?></span>
+<p class="event-rsvp"><span class="rsvp-count"><?php printf( _n( '%s attendee', '%s attendees', $event->yes_rsvp_count, 'meetup-widgets' ), number_format_i18n( $event->yes_rsvp_count ) ); ?></span>
 
-<?php
-if ( vsmeet_can_rsvp_oauth() ) {
-	echo "<span class='rsvp-add'><a href='#' onclick='javascript:window.open(\"{$event->callback_url}&event=$id\",\"authenticate\",\"width=400,height=600\");'>RSVP?</a></span>";
-} else {
-	echo '<span class="rsvp-add"><a href="'.$event->event_url.'">RSVP?</a></span>';
-} ?></p>
+<span class="rsvp-add"><a href="<?php echo esc_url( $event->event_url ); ?>">RSVP?</a></span></p>
 
 <?php
 if ( isset( $event->venue ) ) {
