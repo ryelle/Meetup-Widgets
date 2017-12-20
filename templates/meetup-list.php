@@ -1,4 +1,9 @@
 <?php
+/**
+ * Template for the user and group event lists
+ *
+ * @package Meetup_Widgets
+ */
 global $events;
 
 echo '<ul class="meetup_list">';

@@ -1,9 +1,17 @@
 <?php
 /**
+ * Set up the group list widget
+ *
+ * @package Meetup_Widgets
+ */
+
+/**
  * VsMeetList extends the widget class to create an event list for a specific meetup group.
  */
 class VsMeetListWidget extends WP_Widget {
-	/** constructor */
+	/**
+	 * Set up the widget
+	 */
 	function __construct() {
 		parent::__construct(
 			'vsm-group-list',
@@ -15,26 +23,33 @@ class VsMeetListWidget extends WP_Widget {
 		);
 	}
 
-	/** @see WP_Widget::widget */
+	/**
+	 * Display the widget content
+	 *
+	 * @see WP_Widget::widget
+	 */
 	function widget( $args, $instance ) {
-		extract( $args );
 		$title = apply_filters( 'widget_title', $instance['title'] );
 		$id    = $instance['id']; // meetup ID or URL name
 		$limit = intval( $instance['limit'] );
 
-		echo $before_widget;
+		echo $args['before_widget'];
 		if ( $title ) {
-			echo $before_title . $title . $after_title;
+			echo $args['before_title'] . $title . $args['after_title'];
 		}
 		if ( $id ) {
 			$vsm  = new Meetup_Widget();
 			$html = $vsm->get_group_events( $id, $limit );
 			echo $html;
 		}
-		echo $after_widget;
+		echo $args['after_widget'];
 	}
 
-	/** @see WP_Widget::update */
+	/**
+	 * Save the widget settings
+	 *
+	 * @see WP_Widget::update
+	 */
 	function update( $new_instance, $old_instance ) {
 		$instance          = $old_instance;
 		$instance['title'] = strip_tags( $new_instance['title'] );
@@ -48,7 +63,11 @@ class VsMeetListWidget extends WP_Widget {
 		return $instance;
 	}
 
-	/** @see WP_Widget::form */
+	/**
+	 * Display the widget settings form
+	 *
+	 * @see WP_Widget::form
+	 */
 	function form( $instance ) {
 		if ( $instance ) {
 			$title = esc_attr( $instance['title'] );

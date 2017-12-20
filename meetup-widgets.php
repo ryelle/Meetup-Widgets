@@ -17,7 +17,7 @@ if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 }
 
 require_once( 'class-meetup-widgets-admin.php' );
-require_once( 'vs_meetup_widgets.php' );
+require_once( 'class-meetup-widget.php' );
 
 /**
  * Initialize Meetup Widgets

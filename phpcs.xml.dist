@@ -8,6 +8,7 @@
 		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
 		<exclude name="Squiz.Commenting.InlineComment.NotCapital" />
 		<exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
 	<rule ref="WordPress-Docs" />

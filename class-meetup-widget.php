@@ -9,10 +9,23 @@
  * Class container for requesting & displaying meetup.com data
  */
 class Meetup_Widget {
-	private $api_url   = 'http://api.meetup.com/';
+	/**
+	 * The URL used to fetch event data.
+	 *
+	 * @var string $base_url
+	 */
 	private $base_url  = 'http://api.meetup.com/2/events/';
+
+	/**
+	 * Holds the user's Meetup.com API key
+	 *
+	 * @var string $api_key
+	 */
 	protected $api_key = '';
 
+	/**
+	 * Set our API key by getting it from the database
+	 */
 	public function __construct() {
 		$options       = get_option( 'vs_meet_options' );
 		$this->api_key = $options['vs_meetup_api_key'];
@@ -46,7 +59,7 @@ class Meetup_Widget {
 				return false;
 			}
 			$event = json_decode( $event_response['body'] );
-			// Single events only return first result
+			// Single events only return first result.
 			if ( ! isset( $event->results ) || ! isset( $event->results[0] ) ) {
 				return false;
 			}
@@ -68,8 +81,7 @@ class Meetup_Widget {
 	/**
 	 * Get a single event, with a link to RSVP.
 	 *
-	 * @param string $id Event ID
-	 *
+	 * @param string $id Event ID.
 	 * @return string Event details formatted for display in widget
 	 */
 	public function get_single_event( $id ) {
@@ -79,7 +91,10 @@ class Meetup_Widget {
 		$out           = '';
 
 		if ( ! empty( $this->api_key ) ) {
-			$event = $this->get_data( array( 'event_id' => $id ), 'vsm_single_event_' . $id );
+			$args = array(
+				'event_id' => $id,
+			);
+			$event = $this->get_data( $args, 'vsm_single_event_' . $id );
 			if ( ! $event ) {
 				return;
 			}
@@ -94,7 +109,7 @@ class Meetup_Widget {
 			$out = ob_get_contents();
 
 			if ( empty( $out ) ) {
-				// grab the template included in plugin
+				// No theme template found, grab the template included in plugin.
 				$template = VSMEET_TEMPLATE_DIR . '/meetup-single.php';
 				if ( file_exists( $template ) ) {
 					load_template( $template, false );
@@ -115,9 +130,8 @@ class Meetup_Widget {
 	/**
 	 * Get the HTML for a group's events via Meetup API
 	 *
-	 * @param string $id    Meetup ID or URL name
+	 * @param string $id    Meetup ID or URL name.
 	 * @param string $limit Number of events to display, default 5.
-	 *
 	 * @return string Event list formatted for display in widget
 	 */
 	public function get_group_events( $id, $limit = 5 ) {
@@ -146,7 +160,7 @@ class Meetup_Widget {
 			$out = ob_get_contents();
 
 			if ( empty( $out ) ) {
-				// grab the template included in plugin
+				// No theme template found, grab the template included in plugin.
 				$template = VSMEET_TEMPLATE_DIR . '/meetup-list.php';
 				if ( file_exists( $template ) ) {
 					load_template( $template, false );
@@ -164,7 +178,14 @@ class Meetup_Widget {
 		return $out;
 	}
 
-	// Function name was changed in 2.1, leave this for backwards compatibilty
+	/**
+	 * Function name was changed in 2.1, leave this for backwards compatibilty.
+	 *
+	 * @deprecated 2.2.1 Use Meetup_Widget::get_group_events
+	 * @param string $id    Meetup ID or URL name.
+	 * @param string $limit Number of events to display, default 5.
+	 * @param string $deprecated Unused.
+	 */
 	function get_list_events( $id, $limit = 5, $deprecated = '' ) {
 		$this->get_group_events( $id, $limit );
 	}
@@ -172,10 +193,7 @@ class Meetup_Widget {
 	/**
 	 * Get user's list of events
 	 *
-	 * @param string $id     User ID
 	 * @param string $limit  Number of events to display, default 5.
-	 * @param string $rsvp   Only return events with this RSVP status (can only be set to 'yes' in UI)
-	 *
 	 * @return string Event list formatted for display in widget
 	 */
 	public function get_user_events( $limit = 5 ) {
@@ -199,7 +217,7 @@ class Meetup_Widget {
 			$out = ob_get_contents();
 
 			if ( empty( $out ) ) {
-				// grab the template included in plugin
+				// No theme template found, grab the template included in plugin.
 				$template = VSMEET_TEMPLATE_DIR . '/meetup-list.php';
 				if ( file_exists( $template ) ) {
 					load_template( $template, false );
