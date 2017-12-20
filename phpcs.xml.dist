@@ -2,7 +2,14 @@
 <ruleset name="WordPress Coding Standards for Plugins">
 	<description>Generally-applicable sniffs for WordPress plugins</description>
 
-	<rule ref="WordPress-Core" />
+	<rule ref="WordPress-Core">
+		<exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+		<exclude name="Squiz.Commenting.FunctionComment.MissingParamTag" />
+		<exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
+		<exclude name="Squiz.Commenting.InlineComment.NotCapital" />
+		<exclude name="Squiz.Commenting.LongConditionClosingComment.Missing" />
+	</rule>
+
 	<rule ref="WordPress-Docs" />
 
 	<!-- Check all PHP files in directory tree by default. -->
