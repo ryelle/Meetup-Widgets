@@ -15,10 +15,10 @@ class VsMeetSingleWidget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'vsm-single-event',
-			__( 'Meetup Single Event', 'vsmeet_domain' ),
+			__( 'Meetup Single Event', 'meetup-widgets' ),
 			array(
 				'classname'   => 'widget_meetup_single_event',
-				'description' => __( 'Display a single event.', 'vsmeet_domain' ),
+				'description' => __( 'Display a single event.', 'meetup-widgets' ),
 			)
 		);
 	}
@@ -71,11 +71,11 @@ class VsMeetSingleWidget extends WP_Widget {
 		}
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
+			<?php _e( 'Title:', 'meetup-widgets' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
 		</label></p>
 		<p><label for="<?php echo $this->get_field_id( 'id' ); ?>">
-			<?php _e( 'Event ID:', 'vsmeet_domain' ); ?>
+			<?php _e( 'Event ID:', 'meetup-widgets' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
 		</label></p>
 	<?php

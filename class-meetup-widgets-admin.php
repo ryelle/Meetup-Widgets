@@ -25,9 +25,9 @@ if ( ! class_exists( 'Meetup_Widgets_Admin' ) ) {
 		function register_fields() {
 			register_setting( 'general', 'vs_meet_options', array( $this, 'validate' ) );
 
-			add_settings_section( 'vs_meet', 'Meetup API Settings', array( $this, 'setting_section_vs_meetup' ), 'general' );
+			add_settings_section( 'vs_meet', __( 'Meetup API Settings', 'meetup-widgets' ), array( $this, 'setting_section_vs_meetup' ), 'general' );
 
-			add_settings_field( 'vs_meetup_api_key', sprintf( '<label for="vs_meetup_api_key">%s</label>', __( 'Meetup API Key:', 'vsmeet_domain' ) ), array( $this, 'setting_vs_meetup_api_key' ), 'general', 'vs_meet' );
+			add_settings_field( 'vs_meetup_api_key', sprintf( '<label for="vs_meetup_api_key">%s</label>', __( 'Meetup API Key:', 'meetup-widgets' ) ), array( $this, 'setting_vs_meetup_api_key' ), 'general', 'vs_meet' );
 
 		}
 
@@ -38,7 +38,8 @@ if ( ! class_exists( 'Meetup_Widgets_Admin' ) ) {
 			printf(
 				'<p>%s</p>',
 				sprintf(
-					__( 'To use this plugin, you need to a meetup.com API key. You can find your API key at the <a href="">&ldquo;Getting An API Key&rdquo;</a> page. Click the lock next to the input field, then copy the contents of the input into the Meetup API field below.', 'vsmeet_domain' ),
+					// Translators: %s is the link to the meetup.com API key page.
+					__( 'To use this plugin, you need to a meetup.com API key. You can find your API key at the <a href="%s">&ldquo;Getting An API Key&rdquo;</a> page. Click the lock next to the input field, then copy the contents of the input into the Meetup API field below.', 'meetup-widgets' ),
 					'https://secure.meetup.com/meetup_api/key/'
 				)
 			);

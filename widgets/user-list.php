@@ -15,10 +15,10 @@ class VsMeetUserListWidget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'vsm-user-list',
-			__( 'Meetup User Events', 'vsmeet_domain' ),
+			__( 'Meetup User Events', 'meetup-widgets' ),
 			array(
 				'classname'   => 'widget_meetup_user_list',
-				'description' => __( 'Display a list of events for a single user.', 'vsmeet_domain' ),
+				'description' => __( 'Display a list of events for a single user.', 'meetup-widgets' ),
 			)
 		);
 	}
@@ -75,16 +75,16 @@ class VsMeetUserListWidget extends WP_Widget {
 		}
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
+			<?php _e( 'Title:', 'meetup-widgets' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
 		</label></p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-				<?php _e( 'Number of events to show:', 'vsmeet_domain' ); ?>
+				<?php _e( 'Number of events to show:', 'meetup-widgets' ); ?>
 			</label>
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
 		</p>
-		<p class="description">This widget automatically pulls events from the user who created the API key.</p>
+		<p class="description"><?php _e( 'This widget automatically pulls events from the user who created the API key.', 'meetup-widgets' ); ?></p>
 	<?php
 	}
 }

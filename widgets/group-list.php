@@ -15,10 +15,10 @@ class VsMeetListWidget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'vsm-group-list',
-			__( 'Meetup List Event', 'vsmeet_domain' ),
+			__( 'Meetup List Event', 'meetup-widgets' ),
 			array(
 				'classname'   => 'widget_meetup_group_list',
-				'description' => __( 'Display a list of events.', 'vsmeet_domain' ),
+				'description' => __( 'Display a list of events.', 'meetup-widgets' ),
 			)
 		);
 	}
@@ -80,16 +80,16 @@ class VsMeetListWidget extends WP_Widget {
 		}
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'title' ); ?>">
-			<?php _e( 'Title:', 'vsmeet_domain' ); ?>
+			<?php _e( 'Title:', 'meetup-widgets' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo $title; ?>" />
 		</label></p>
 		<p><label for="<?php echo $this->get_field_id( 'id' ); ?>">
-			<?php _e( 'Group ID:', 'vsmeet_domain' ); ?>
+			<?php _e( 'Group ID:', 'meetup-widgets' ); ?>
 			<input class="widefat" id="<?php echo $this->get_field_id( 'id' ); ?>" name="<?php echo $this->get_field_name( 'id' ); ?>" type="text" value="<?php echo $id; ?>" />
 		</label></p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-				<?php _e( 'Number of events to show:', 'vsmeet_domain' ); ?>
+				<?php _e( 'Number of events to show:', 'meetup-widgets' ); ?>
 			</label>
 			<input id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="text" value="<?php echo $limit; ?>" size='3' />
 		</p>

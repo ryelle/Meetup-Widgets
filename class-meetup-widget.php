@@ -121,7 +121,11 @@ class Meetup_Widget {
 
 		} else {
 			if ( is_user_logged_in() ) {
-				$out = '<p><a href="' . admin_url( 'options-general.php' ) . '">Please enter an API key</a></p>';
+				$out = sprintf(
+					'<p><a href="%1$s">%2$s</a></p>',
+					admin_url( 'options-general.php' ),
+					__( 'Please enter an API key', 'meetup-widgets' )
+				);
 			}
 		}
 		return $out;
@@ -172,7 +176,11 @@ class Meetup_Widget {
 
 		} else {
 			if ( is_user_logged_in() ) {
-				$out = '<p><a href="' . admin_url( 'options-general.php' ) . '">Please enter an API key</a></p>';
+				$out = sprintf(
+					'<p><a href="%1$s">%2$s</a></p>',
+					admin_url( 'options-general.php' ),
+					__( 'Please enter an API key', 'meetup-widgets' )
+				);
 			}
 		}
 		return $out;
@@ -228,7 +236,11 @@ class Meetup_Widget {
 			ob_end_clean();
 
 		} else {
-			$out = '<p><a href="' . admin_url( 'options-general.php' ) . '">Please enter an API key</a></p>';
+			$out = sprintf(
+				'<p><a href="%1$s">%2$s</a></p>',
+				admin_url( 'options-general.php' ),
+				__( 'Please enter an API key', 'meetup-widgets' )
+			);
 		}
 		return $out;
 	}
