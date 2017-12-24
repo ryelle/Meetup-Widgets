@@ -39,6 +39,10 @@ It's in the event page's URL: http://www.meetup.com/`[group ID]`/events/`[event 
 
 If your meetup group is set up at meetup.com/`[group URL name]`, the part after `meetup.com/` is one of your group identifiers (the URL name). The other possible identifier is your group's ID number.
 
+= What happened to the OAuth feature? =
+
+Previous to version 3.0, this plugin had a feature where you could RSVP to an event using OAuth to transparently log in to Meetup.com, without leaving the host website. This was using PHP's core OAuth implementation, which used OAuth 1, an outdated approach. Since there is no core support for OAuth 2, and it also requires sites to have HTTPS enabled, I've decided it's better to remove the feature. **Potential attendees can still RSVP from the widget**, it will now take them to the event on Meetup.com.
+
 == Screenshots ==
 
 1. Example of the single event detail widget, shows title, date, an excerpt of the description, number of currently-rsvp'd attendees, a link to RSVP, and the location (linking to a google map).
@@ -49,7 +53,9 @@ If your meetup group is set up at meetup.com/`[group URL name]`, the part after 
 = 3.0.0 =
 
 * Removal of OAuth
-* Refactor widgets into new `widgets/*` files, update code
+* Refactor widgets into new `widgets/*` files
+* Move templates into `templates/` folder
+* Add PHP CodeSniffer, clean up flagged issues
 
 = 2.2.1 =
 
