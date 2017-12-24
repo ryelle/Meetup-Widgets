@@ -5,7 +5,12 @@
  * @package Meetup_Widgets
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $event;
+
 if ( isset( $event->time ) ) {
 	$date = date( 'F d, Y @ g:i a', intval( $event->time / 1000 + $event->utc_offset / 1000 ) );
 } else {

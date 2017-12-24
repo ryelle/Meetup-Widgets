@@ -4,6 +4,11 @@
  *
  * @package Meetup_Widgets
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $events;
 
 echo '<ul class="meetup_list">';
