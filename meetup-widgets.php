@@ -23,7 +23,7 @@ require_once( 'class-meetup-widget.php' );
  * Initialize Meetup Widgets
  */
 function meetup_widgets_start() {
-	$vsmw = new Meetup_Widgets_Admin();
+	new Meetup_Widgets_Admin();
 
 } add_action( 'init', 'meetup_widgets_start' );
 
