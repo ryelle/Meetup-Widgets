@@ -12,6 +12,10 @@
  * @package Meetup_Widgets
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 	define( 'VSMEET_TEMPLATE_DIR', dirname( __FILE__ ) . '/templates/' );
 }
