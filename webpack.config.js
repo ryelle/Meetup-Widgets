@@ -47,4 +47,7 @@ module.exports = {
 		}),
 		blocksCSSPlugin,
 	],
+	devServer: {
+		port: 8081,
+	},
 };
