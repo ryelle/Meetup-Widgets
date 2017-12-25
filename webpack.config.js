@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // CSS loader for styles specific to blocks in general.
 const blocksCSSPlugin = new ExtractTextPlugin({
-	filename: './blocks/build/style.css',
+	filename: './blocks/build/editor.css',
 });
 
 // Configuration for the ExtractTextPlugin.

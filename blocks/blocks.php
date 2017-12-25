@@ -12,7 +12,7 @@
 function vs_meetup_widgets_enqueue_block_assets() {
 	$dir = dirname( __FILE__ );
 	$js_file = 'http://localhost:8081/blocks/build/index.js';
-	$css_file = 'http://localhost:8081/blocks/build/style.css';
+	$css_file = 'http://localhost:8081/blocks/build/editor.css';
 	$js_version = false;
 	$css_version = false;
 
