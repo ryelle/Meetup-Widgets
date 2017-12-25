@@ -1,5 +1,14 @@
 <?php
+/**
+ * Initialize Gutenberg block support
+ *
+ * @package Meetup_Widgets
+ * @since 3.0.0
+ */
 
+/**
+ * Add Gutenberg block JS & CSS to the editor
+ */
 function vs_meetup_widgets_enqueue_block_assets() {
 	$dir = dirname( __FILE__ );
 	wp_enqueue_script( 'group-list-block', plugins_url( 'build/index.js', __FILE__ ), array(
