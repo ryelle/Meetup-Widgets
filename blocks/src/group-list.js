@@ -1,15 +1,45 @@
+import 'whatwg-fetch';
+import { stringify as querystring } from 'qs';
+import debounce from 'debounce';
 const { __ } = wp.i18n;
 const {
 	BlockDescription,
+	Editable,
 	InspectorControls,
-	InspectorControls: { TextControl },
+	InspectorControls: { RangeControl, TextControl },
 } = wp.blocks;
 
 const translate = str => __(str, 'meetup-widgets');
 
+const getMeetupEvents = ({ limit, group }) => {
+	if (!group || limit <= 0) {
+		return;
+	}
+	// Set up args for the API endpoint
+	const args = {
+		status: 'upcoming',
+		page: limit,
+		group_urlname: group,
+	};
+	// Make API request, set response
+	// Use debounce somewhere
+	return [];
+};
+
+const defaultAttributes = {
+	title: false,
+	limit: 5,
+	group: '',
+	response: false,
+	formattedEvents: null,
+};
+
 // Visit https://wordpress.org/gutenberg/handbook/block-api/ to learn about Block API
 export default {
 	title: translate('Meetup.com List'),
+	description: translate(
+		'This is a list of events for a given group on Meetup.com',
+	),
 
 	icon: 'editor-ul',
 
@@ -19,27 +49,62 @@ export default {
 	supportHTML: false,
 
 	edit: ({ attributes, setAttributes, focus, setFocus }) => {
-		console.log(attributes);
+		// Inject default attributes
+		attributes = { ...defaultAttributes, ...attributes };
+		getMeetupEvents(attributes);
+
+		const onChangeEditable = field => value =>
+			setAttributes({ [field]: value });
+
+		const onFocus = field => focus =>
+			setFocus({ ...focus, editable: field });
+
+		const focusedEditable = focus ? focus.editable || 'title' : null;
+
+		const controls = focus && (
+			<InspectorControls key="meetup-inspector">
+				<TextControl
+					label={translate('Group Name')}
+					value={attributes.group}
+					onChange={onChangeEditable('group')}
+				/>
+				<RangeControl
+					label={translate('Number of event to show')}
+					value={attributes.limit}
+					onChange={onChangeEditable('limit')}
+					min={2}
+					max={15}
+				/>
+			</InspectorControls>
+		);
+
 		return [
-			<div className="">
-				<h2>{translate('Text!')}</h2>
+			controls,
+			<div className="meetup-widgets" key="meetup-display">
+				<Editable
+					tagName="h3"
+					placeholder={translate('Upcoming Events')}
+					onChange={onChangeEditable('title')}
+					focus={focusedEditable === 'title'}
+					onFocus={onFocus('title')}
+					className="meetup-widgets-title"
+					value={attributes.title}
+				/>
+				<ul className="meetup-widgets-list">
+					{attributes.formattedEvents}
+				</ul>
 			</div>,
-			!!focus && (
-				<InspectorControls key="inspector">
-					<BlockDescription>
-						<h3>{translate('Meetup.com ?')}</h3>
-					</BlockDescription>
-					<TextControl
-						label={translate('Group')}
-						value={attributes.test}
-						onChange={value => setAttributes({ test: value })}
-					/>
-				</InspectorControls>
-			),
 		];
 	},
 
-	save: () => {
-		return null;
+	save: ({ attributes }) => {
+		return (
+			<div className="meetup-widgets">
+				<h3>{attributes.title}</h3>
+				<ul className="meetup-widgets-list">
+					{attributes.formattedEvents}
+				</ul>
+			</div>
+		);
 	},
 };
