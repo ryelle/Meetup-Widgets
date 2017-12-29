@@ -22,12 +22,15 @@ if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 
 require_once( 'class-meetup-widgets-admin.php' );
 require_once( 'class-meetup-widget.php' );
+require_once( 'api/class-meetup-rest-group-controller.php' );
 
 /**
  * Initialize Meetup Widgets
  */
 function meetup_widgets_start() {
 	new Meetup_Widgets_Admin();
+	$group_controller = new Meetup_REST_Group_Controller();
+	$group_controller->register_routes();
 
 } add_action( 'init', 'meetup_widgets_start' );
 
