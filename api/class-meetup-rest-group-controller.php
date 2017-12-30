@@ -27,6 +27,7 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 				'methods'         => WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'args'            => $this->get_endpoint_args(),
 			),
 		) );
 
@@ -36,11 +37,6 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 				'callback'        => array( $this, 'get_item' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
-		) );
-
-		register_rest_route( $namespace, '/' . $base . '/schema', array(
-			'methods'         => WP_REST_Server::READABLE,
-			'callback'        => array( $this, 'get_public_item_schema' ),
 		) );
 	}
 
@@ -53,7 +49,7 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	public function get_items( $request ) {
 		$api    = new Meetup_API_V3();
 		$params = $request->get_params();
-		$count  = isset( $params['count'] ) ? intval( $params['count'] ) : 3;
+		$count  = intval( $params['count'] );
 		$id     = $params['id'];
 		$args   = array(
 			'status' => 'upcoming',
@@ -166,5 +162,24 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 			);
 		}
 		return true;
+	}
+
+	/**
+	 * Get the argument schema for this example endpoint.
+	 */
+	function get_endpoint_args() {
+		$args = array();
+
+		// Here we add our PHP representation of JSON Schema.
+		$args['count'] = array(
+			'description'       => esc_html__( 'Number of events to show.', 'meetup-widgets' ),
+			'type'              => 'integer',
+			'validate_callback' => 'absint',
+			'sanitize_callback' => 'absint',
+			'required'          => false,
+			'default'           => 3,
+		);
+
+		return $args;
 	}
 }
