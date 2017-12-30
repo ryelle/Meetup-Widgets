@@ -43,21 +43,15 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$vsm  = new Meetup_Widget();
-		$count = intval( $request['count'] ) || 3;
+		$api  = new Meetup_API_V3();
+		$count = $request['count'] ? intval( $request['count'] ) : 3;
 		$id = $request['id'];
 		$args = array(
 			'status' => 'upcoming',
 			'page'   => $count,
 		);
-		if ( preg_match( '/^[0-9]+$/', $id ) ) {
-			$args['group_id'] = $id;
-		} else {
-			$args['group_urlname'] = $id;
-		}
 
-		// switch to v3?
-		$items = $vsm->get_data( $args, 'vsm_group_events_' . $id . '_' . $count );
+		$items = $api->get_events( $id, $args, 'vsm_v3_group_' . $id . '_' . $count );
 		if ( ! $items ) {
 			return [];
 		}
@@ -121,18 +115,15 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 			$venue['city'],
 			$venue['state']
 		);
-		$link = sprintf(
-			'<a href="http://maps.google.com/maps?q=%1$s&z=17">%2$s</a>',
-			$venue_str,
-			$venue['name']
-		);
 
 		return array(
 			'name' => $item->name,
 			'description' => $item->description,
-			'event_url' => $item->event_url,
-			'maps_link' => $link,
-			'time' => date( 'M d, g:ia', intval( $item->time / 1000 + $item->utc_offset / 1000 ) ),
+			'url' => $item->link,
+			'google_maps' => "http://maps.google.com/maps?q={$venue_str}&z=17",
+			'date' => date( 'M d, g:ia', intval( $item->time / 1000 + $item->utc_offset / 1000 ) ),
+			'raw_date' => $item->time,
+			'status' => $item->status,
 			'venue' => $venue,
 			'venue_display' => $venue_str,
 			'yes_rsvp_count' => $item->yes_rsvp_count,

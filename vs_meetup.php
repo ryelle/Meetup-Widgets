@@ -22,6 +22,7 @@ if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 
 require_once( 'class-meetup-widgets-admin.php' );
 require_once( 'class-meetup-widget.php' );
+require_once( 'class-meetup-api-v3.php' );
 require_once( 'api/class-meetup-rest-group-controller.php' );
 
 /**
