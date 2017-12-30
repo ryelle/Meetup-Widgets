@@ -76,4 +76,49 @@ class Meetup_API_V3 {
 
 		return $data;
 	}
+
+	/**
+	 * Given arguments & a transient name, grab data from the events API
+	 *
+	 * @param string $group      The parent group name.
+	 * @param string $event      The event ID to fetch.
+	 * @param string $transient  The transient name (if empty, no transient stored).
+	 * @return array Event data (single event)
+	 */
+	public function get_event( $group = false, $event = false, $transient = '' ) {
+		if ( ! $group ) {
+			return new WP_Error( 'undefined_group', __( 'Requested group name missing.', 'meetup-widgets' ) );
+		}
+		if ( ! $event ) {
+			return new WP_Error( 'undefined_event', __( 'Requested event ID missing.', 'meetup-widgets' ) );
+		}
+		$data = false;
+		if ( $transient ) {
+			$data = get_transient( $transient );
+		}
+
+		$args = array(
+			'key' => $this->api_key,
+		);
+
+		if ( false === $data ) {
+			$url = sprintf( '%s/%s/events/%s', $this->base_url, $group, $event );
+			$url = add_query_arg( $args, $url );
+			$event_response = wp_remote_get( $url );
+			if ( is_wp_error( $event_response ) ) {
+				return $event_response;
+			}
+			$data = json_decode( $event_response['body'] );
+			if ( isset( $data->errors ) ) {
+				$err = array_shift( $data->errors );
+				return new WP_Error( $err->code, $err->message );
+			}
+
+			if ( $transient ) {
+				set_transient( $transient, $data, 2 * HOUR_IN_SECONDS );
+			}
+		}
+
+		return $data;
+	}
 }

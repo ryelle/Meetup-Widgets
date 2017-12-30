@@ -22,10 +22,18 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	public function register_routes() {
 		$namespace = 'meetup/v1';
 		$base      = 'group';
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\S]+)', array(
+		register_rest_route( $namespace, '/' . $base . '/(?P<id>[^/]+)', array(
 			array(
 				'methods'         => WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			),
+		) );
+
+		register_rest_route( $namespace, '/' . $base . '/(?P<group_id>[^/]+)/(?P<event_id>[^/]+)', array(
+			array(
+				'methods'         => WP_REST_Server::READABLE,
+				'callback'        => array( $this, 'get_item' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
@@ -43,10 +51,11 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$api  = new Meetup_API_V3();
-		$count = $request['count'] ? intval( $request['count'] ) : 3;
-		$id = $request['id'];
-		$args = array(
+		$api    = new Meetup_API_V3();
+		$params = $request->get_params();
+		$count  = isset( $params['count'] ) ? intval( $params['count'] ) : 3;
+		$id     = $params['id'];
+		$args   = array(
 			'status' => 'upcoming',
 			'page'   => $count,
 		);
@@ -75,17 +84,24 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_item( $request ) {
-		// get parameters from request
+		$api    = new Meetup_API_V3();
 		$params = $request->get_params();
-		$item = array(); // do a query, call another class, etc
+		$item   = $api->get_event(
+			$params['group_id'],
+			$params['event_id'],
+			'vsm_v3_event_' . $params['group_id'] . '_' . $params['event_id']
+		);
+		if ( ! $item ) {
+			return [];
+		}
+		if ( is_wp_error( $item ) ) {
+			return $item;
+		}
+
 		$data = $this->prepare_item_for_response( $item, $request );
 
 		// return a response or error based on some conditional
-		if ( 1 == 1 ) {
-			return new WP_REST_Response( $data, 200 );
-		} else {
-			return new WP_Error( 'code', __( 'message', 'text-domain' ) );
-		}
+		return new WP_REST_Response( $data, 200 );
 	}
 
 	/**
