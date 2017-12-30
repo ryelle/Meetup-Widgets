@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handle all group-related event fetching
  */
-class Meetup_REST_Group_Controller extends WP_REST_Controller {
+class Meetup_REST_Events_Controller extends WP_REST_Controller {
 
 	/**
 	 * Register the routes for the objects of the controller.
