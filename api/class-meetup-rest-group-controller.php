@@ -21,7 +21,16 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 	 */
 	public function register_routes() {
 		$namespace = 'meetup/v1';
-		$base      = 'group';
+		$base      = 'events';
+		register_rest_route( $namespace, '/' . $base . '/self', array(
+			array(
+				'methods'         => WP_REST_Server::READABLE,
+				'callback'        => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'args'            => $this->get_endpoint_args(),
+			),
+		) );
+
 		register_rest_route( $namespace, '/' . $base . '/(?P<id>[^/]+)', array(
 			array(
 				'methods'         => WP_REST_Server::READABLE,
@@ -50,13 +59,18 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 		$api    = new Meetup_API_V3();
 		$params = $request->get_params();
 		$count  = intval( $params['count'] );
-		$id     = $params['id'];
 		$args   = array(
 			'status' => 'upcoming',
 			'page'   => $count,
 		);
 
-		$items = $api->get_events( $id, $args, 'vsm_v3_group_' . $id . '_' . $count );
+		if ( isset( $params['id'] ) ) {
+			$id = $params['id'];
+			$items = $api->get_events( $id, $args, 'vsm_v3_group_' . $id . '_' . $count );
+		} else {
+			$items = $api->get_self_events( $args, 'vsm_v3_self_' . $count );
+		}
+
 		if ( ! $items ) {
 			return [];
 		}

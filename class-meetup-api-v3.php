@@ -80,6 +80,48 @@ class Meetup_API_V3 {
 	/**
 	 * Given arguments & a transient name, grab data from the events API
 	 *
+	 * @param array  $args       Query params to send to events call.
+	 * @param string $transient  The transient name (if empty, no transient stored).
+	 * @return array Event data (list of events)
+	 */
+	public function get_self_events( $args = [], $transient = '' ) {
+		$data = false;
+		if ( $transient ) {
+			$data = get_transient( $transient );
+		}
+
+		$defaults = array(
+			'key' => $this->api_key,
+		);
+
+		if ( false === $data ) {
+			$args = wp_parse_args( $args, $defaults );
+			$url  = sprintf( '%s/self/events', $this->base_url );
+			$url  = add_query_arg( $args, $url );
+			$events_response = wp_remote_get( $url );
+			if ( is_wp_error( $events_response ) ) {
+				return $events_response;
+			}
+			$data = json_decode( $events_response['body'] );
+			if ( isset( $data->errors ) ) {
+				$err = array_shift( $data->errors );
+				return new WP_Error( $err->code, $err->message );
+			}
+			if ( ! is_array( $data ) ) {
+				return new WP_Error( 'response_error', __( 'Response is not formatted correctly', 'meetup-widgets' ) );
+			}
+
+			if ( $transient ) {
+				set_transient( $transient, $data, 2 * HOUR_IN_SECONDS );
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Given arguments & a transient name, grab data from the events API
+	 *
 	 * @param string $group      The parent group name.
 	 * @param string $event      The event ID to fetch.
 	 * @param string $transient  The transient name (if empty, no transient stored).
