@@ -117,6 +117,7 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 		);
 
 		return array(
+			'id' => $item->id,
 			'name' => $item->name,
 			'description' => $item->description,
 			'url' => $item->link,
