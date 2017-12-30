@@ -26,7 +26,7 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 			array(
 				'methods'         => WP_REST_Server::READABLE,
 				'callback'        => array( $this, 'get_items' ),
-				'permission_callback' => '__return_true', // Any site visitor can read this
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 
@@ -137,5 +137,26 @@ class Meetup_REST_Group_Controller extends WP_REST_Controller {
 			'venue_display' => $venue_str,
 			'yes_rsvp_count' => $item->yes_rsvp_count,
 		);
+	}
+
+	/**
+	 * Check permissions for this endpoint.
+	 *
+	 * Only logged-in users can use this proxy, to prevent anonymous users from
+	 * spamming the meetup.com API with the site-owner's API key.
+	 *
+	 * @param WP_REST_Request $request Current request.
+	 */
+	public function get_items_permissions_check( $request ) {
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return new WP_Error(
+				'rest_forbidden',
+				esc_html__( 'You cannot view the post resource.', 'meetup-widgets' ),
+				array(
+					'status' => is_user_logged_in() ? 403 : 401,
+				)
+			);
+		}
+		return true;
 	}
 }
