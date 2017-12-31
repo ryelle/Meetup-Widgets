@@ -27,3 +27,49 @@ function vs_meetup_widgets_enqueue_block_assets() {
 	wp_enqueue_style( 'meetup-blocks', $css_file, [ 'wp-blocks' ], $css_version );
 }
 add_action( 'enqueue_block_editor_assets', 'vs_meetup_widgets_enqueue_block_assets' );
+
+/**
+ * Renders the `core/latest-posts` block on server.
+ *
+ * @param array $attributes The block attributes.
+ *
+ * @return string Returns the post content with latest posts added.
+ */
+function vs_meetup_widgets_render_block_group_list( $attributes ) {
+	$request = new WP_REST_Request( 'GET', '/meetup/v1/events/' . $attributes['group'] );
+	$request->set_query_params( array(
+		'per_page' => $attributes['per_page'],
+	) );
+	$response = rest_do_request( $request );
+	if ( 200 !== $response->get_status() ) {
+		return '<h3>' . $attributes['title'] . '</h3>';
+	}
+
+	$events = $response->get_data();
+	$block_content = [ '<h3>' . $attributes['title'] . '</h3>', '<ul>' ];
+	array_push( $block_content, '<p>' . $attributes['group'] . '</p>' );
+	foreach ( $events as $event ) {
+		$list_item = '<li>' . $event['name'] . ' ' . $event['date'] . '</li>';
+		array_push( $block_content, $list_item );
+	}
+	array_push( $block_content, '</ul>' );
+
+	return implode( "\n", $block_content );
+}
+
+register_block_type( 'meetup-widgets/group-list', array(
+	'attributes' => array(
+		'title' => array(
+			'type' => 'string',
+			'default' => __( 'Upcoming Events', 'meetup-widgets' ),
+		),
+		'group' => array(
+			'type' => 'string',
+		),
+		'per_page' => array(
+			'type' => 'number',
+			'default' => 5,
+		),
+	),
+	'render_callback' => 'vs_meetup_widgets_render_block_group_list',
+) );
