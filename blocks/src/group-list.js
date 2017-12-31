@@ -1,45 +1,20 @@
-import 'whatwg-fetch';
-import { stringify as querystring } from 'qs';
-import debounce from 'debounce';
+/**
+ * Core WP Dependencies
+ *
+ * @format
+ */
 const { __ } = wp.i18n;
-const {
-	BlockDescription,
-	Editable,
-	InspectorControls,
-	InspectorControls: { RangeControl, TextControl },
-} = wp.blocks;
+const translate = str => __( str, 'meetup-widgets' );
 
-const translate = str => __(str, 'meetup-widgets');
-
-const getMeetupEvents = ({ limit, group }) => {
-	if (!group || limit <= 0) {
-		return;
-	}
-	// Set up args for the API endpoint
-	const args = {
-		status: 'upcoming',
-		page: limit,
-		group_urlname: group,
-	};
-	// Make API request, set response
-	// Use debounce somewhere
-	return [];
-};
-
-const defaultAttributes = {
-	title: false,
-	limit: 5,
-	group: '',
-	response: false,
-	formattedEvents: null,
-};
+/**
+ * Internal Dependencies
+ */
+import { GroupListBlock } from './blocks/group-list';
 
 // Visit https://wordpress.org/gutenberg/handbook/block-api/ to learn about Block API
 export default {
-	title: translate('Meetup.com List'),
-	description: translate(
-		'This is a list of events for a given group on Meetup.com',
-	),
+	title: translate( 'Meetup.com List' ),
+	description: translate( 'This is a list of events for a given group on Meetup.com' ),
 
 	icon: 'editor-ul',
 
@@ -97,13 +72,11 @@ export default {
 		];
 	},
 
-	save: ({ attributes }) => {
+	save: ( { attributes } ) => {
 		return (
 			<div className="meetup-widgets">
-				<h3>{attributes.title}</h3>
-				<ul className="meetup-widgets-list">
-					{attributes.formattedEvents}
-				</ul>
+				<h3>{ attributes.title }</h3>
+				<ul className="meetup-widgets-list">{ attributes.formattedEvents }</ul>
 			</div>
 		);
 	},

@@ -1,3 +1,5 @@
+/** @format */
+
 const { __ } = wp.i18n;
 
 // Visit https://wordpress.org/gutenberg/handbook/block-api/ to learn about Block API
@@ -16,6 +18,6 @@ export default {
 	},
 
 	save: () => {
-		return null
-	}
+		return null;
+	},
 };
