@@ -24,13 +24,17 @@ require_once( 'class-meetup-widgets-admin.php' );
 require_once( 'class-meetup-widget.php' );
 require_once( 'class-meetup-api-v3.php' );
 require_once( 'api/class-meetup-rest-events-controller.php' );
+require_once( 'api/class-meetup-rest-groups-controller.php' );
 
 /**
  * Initialize Meetup Widgets
  */
 function meetup_widgets_start() {
 	new Meetup_Widgets_Admin();
-	$group_controller = new Meetup_REST_Events_Controller();
+	$event_controller = new Meetup_REST_Events_Controller();
+	$event_controller->register_routes();
+
+	$group_controller = new Meetup_REST_Groups_Controller();
 	$group_controller->register_routes();
 
 } add_action( 'init', 'meetup_widgets_start' );

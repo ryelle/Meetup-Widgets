@@ -169,7 +169,7 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			return new WP_Error(
 				'rest_forbidden',
-				esc_html__( 'You cannot view the post resource.', 'meetup-widgets' ),
+				esc_html__( 'You cannot view the event resource.', 'meetup-widgets' ),
 				array(
 					'status' => is_user_logged_in() ? 403 : 401,
 				)
