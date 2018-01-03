@@ -122,30 +122,36 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		$venue = wp_parse_args(
-			(array) $item->venue,
-			array(
-				'name' => '',
-				'address_1' => '',
-				'address_2' => '',
-				'address_3' => '',
-				'city' => '',
-				'state' => '',
-				'country' => '',
-			)
+		$venue_defaults = array(
+			'name' => '',
+			'address_1' => '',
+			'address_2' => '',
+			'address_3' => '',
+			'city' => '',
+			'state' => '',
+			'country' => '',
 		);
-		$venue_str = sprintf(
-			'%1$s – %2$s, %3$s, %4$s',
-			$venue['name'],
-			$venue['address_1'],
-			$venue['city'],
-			$venue['state']
-		);
+		if ( isset( $item->venue ) ) {
+			$venue = wp_parse_args(
+				(array) $item->venue,
+				$venue_defaults
+			);
+			$venue_str = sprintf(
+				'%1$s – %2$s, %3$s, %4$s',
+				$venue['name'],
+				$venue['address_1'],
+				$venue['city'],
+				$venue['state']
+			);
+		} else {
+			$venue = $venue_defaults;
+			$venue_str = '';
+		}
 
 		return array(
 			'id' => $item->id,
 			'name' => $item->name,
-			'description' => $item->description,
+			'description' => isset( $item->description ) ? $item->description : '',
 			'url' => $item->link,
 			'google_maps' => "http://maps.google.com/maps?q={$venue_str}&z=17",
 			'date' => date( 'M d, g:ia', intval( $item->time / 1000 + $item->utc_offset / 1000 ) ),
