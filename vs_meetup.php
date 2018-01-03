@@ -20,12 +20,12 @@ if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 	define( 'VSMEET_TEMPLATE_DIR', dirname( __FILE__ ) . '/includes/templates/' );
 }
 
-require_once( 'includes/class-meetup-widgets-admin.php' );
 require_once( 'includes/class-meetup-widget.php' );
+require_once( 'includes/class-meetup-widgets-admin.php' );
+require_once( 'includes/class-meetup-widgets-blocks.php' );
 require_once( 'includes/class-meetup-api-v3.php' );
 require_once( 'includes/api/class-meetup-rest-events-controller.php' );
 require_once( 'includes/api/class-meetup-rest-groups-controller.php' );
-require_once( 'includes/blocks/blocks.php' );
 require_once( 'includes/widgets/single.php' );
 require_once( 'includes/widgets/group-list.php' );
 require_once( 'includes/widgets/user-list.php' );
@@ -35,6 +35,7 @@ require_once( 'includes/widgets/user-list.php' );
  */
 function meetup_widgets_start() {
 	new Meetup_Widgets_Admin();
+	new Meetup_Widgets_Blocks();
 	$event_controller = new Meetup_REST_Events_Controller();
 	$event_controller->register_routes();
 
