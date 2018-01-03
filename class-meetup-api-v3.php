@@ -163,4 +163,46 @@ class Meetup_API_V3 {
 
 		return $data;
 	}
+
+	/**
+	 * Given arguments & a transient name, grab data from the groups API
+	 *
+	 * @param string $transient  The transient name (if empty, no transient stored).
+	 * @return array Event data (list of events)
+	 */
+	public function get_self_groups( $transient = '' ) {
+		$data = false;
+		if ( $transient ) {
+			$data = get_transient( $transient );
+		}
+
+		$args = array(
+			'key'  => $this->api_key,
+			'page' => 200,
+		);
+
+		if ( false === $data ) {
+			$url = sprintf( '%s/self/groups', $this->base_url );
+			$url = add_query_arg( $args, $url );
+			$groups_response = wp_remote_get( $url );
+			if ( is_wp_error( $groups_response ) ) {
+				return $groups_response;
+			}
+			$data = json_decode( $groups_response['body'] );
+			if ( isset( $data->errors ) ) {
+				$err = array_shift( $data->errors );
+				return new WP_Error( $err->code, $err->message );
+			}
+			if ( ! is_array( $data ) ) {
+				return new WP_Error( 'response_error', __( 'Response is not formatted correctly', 'meetup-widgets' ) );
+			}
+
+			if ( $transient ) {
+				set_transient( $transient, $data, 2 * HOUR_IN_SECONDS );
+			}
+		}
+
+		return $data;
+	}
+
 }

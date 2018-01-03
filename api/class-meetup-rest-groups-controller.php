@@ -38,15 +38,8 @@ class Meetup_REST_Groups_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$items = [
-			[
-				'name' => 'Boston WordPress',
-				'urlname' => 'boston-wordpress-meetup',
-			], [
-				'name' => 'Women Who Code',
-				'urlname' => 'Women-Who-Code-Boston',
-			],
-		];
+		$api   = new Meetup_API_V3();
+		$items = $api->get_self_groups( 'vsm_v3_self_groups' );
 
 		if ( ! $items ) {
 			return [];
@@ -73,9 +66,9 @@ class Meetup_REST_Groups_Controller extends WP_REST_Controller {
 	 */
 	public function prepare_item_for_response( $item, $request ) {
 		return array(
-			'id' => rand( 0, 20 ),
-			'name' => $item['name'],
-			'urlname' => $item['urlname'],
+			'id' => $item->id,
+			'name' => $item->name,
+			'urlname' => $item->urlname,
 		);
 	}
 
