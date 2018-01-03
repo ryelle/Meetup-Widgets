@@ -13,3 +13,4 @@ blocks/build
 phpcs.xml
 yarn.lock
 package-lock.json
+mock-data
