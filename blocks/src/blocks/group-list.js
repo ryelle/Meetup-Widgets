@@ -11,7 +11,11 @@ import { stringify } from 'qs';
 const { __ } = wp.i18n;
 const translate = str => __( str, 'meetup-widgets' );
 const { Component } = wp.element;
-const { Editable, InspectorControls, InspectorControls: { RangeControl, TextControl } } = wp.blocks;
+const {
+	Editable,
+	InspectorControls,
+	InspectorControls: { RangeControl, SelectControl },
+} = wp.blocks;
 const { Placeholder, Spinner, withAPIData } = wp.components;
 
 class GroupListBlock extends Component {
@@ -31,7 +35,7 @@ class GroupListBlock extends Component {
 
 	renderEventsList() {
 		const { isLoading, data = [] } = this.props.events || {};
-		console.log( isLoading, data );
+		console.log( 'events', isLoading, data );
 		if ( isLoading ) {
 			return (
 				<Placeholder icon="editor-list" label={ translate( 'Fetching Events…' ) }>
@@ -54,14 +58,24 @@ class GroupListBlock extends Component {
 	}
 
 	render() {
-		const { attributes, focus } = this.props;
+		const { attributes, focus, groups: { data = [] } } = this.props;
 		const focusedEditable = focus ? focus.editable || 'title' : null;
+
+		const groupOptions = data.map( group => ( {
+			label: group.name,
+			value: group.urlname,
+		} ) );
+		groupOptions.unshift( {
+			label: translate( 'Select a group…' ),
+			value: '',
+		} );
 
 		const controls = focus && (
 			<InspectorControls key="meetup-inspector">
-				<TextControl
+				<SelectControl
 					label={ translate( 'Group Name' ) }
 					value={ attributes.group }
+					options={ groupOptions }
 					onChange={ this.onChangeEditable( 'group' ) }
 				/>
 				<RangeControl
@@ -93,12 +107,10 @@ class GroupListBlock extends Component {
 }
 
 export default withAPIData( props => {
-	const { group, per_page } = props.attributes;
-	if ( ! group ) {
-		return {};
-	}
+	const { group, per_page = 3 } = props.attributes;
 	const queryString = stringify( { per_page } );
 	return {
-		events: `/meetup/v1/events/${ group }?${ queryString }`,
+		events: group ? `/meetup/v1/events/${ group }?${ queryString }` : {},
+		groups: '/meetup/v1/groups/self',
 	};
 } )( GroupListBlock );
