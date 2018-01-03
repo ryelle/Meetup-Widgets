@@ -23,6 +23,7 @@ class GroupListBlock extends Component {
 		super( ...arguments );
 		this.onChangeEditable = this.onChangeEditable.bind( this );
 		this.onFocus = this.onFocus.bind( this );
+		this.renderEventsList = this.renderEventsList.bind( this );
 	}
 
 	onChangeEditable( field ) {
@@ -34,7 +35,10 @@ class GroupListBlock extends Component {
 	}
 
 	renderEventsList() {
-		const { isLoading, data = [] } = this.props.events || {};
+		const { attributes, focus, events = {} } = this.props;
+		const { isLoading, data = [] } = events;
+		const focusedEditable = focus ? focus.editable || 'title' : null;
+
 		console.log( 'events', isLoading, data );
 		if ( isLoading ) {
 			return (
@@ -45,6 +49,18 @@ class GroupListBlock extends Component {
 		}
 		if ( data.code ) {
 			return <p>{ data.message }</p>;
+		}
+		if ( ! data.length ) {
+			return (
+				<Editable
+					tagName="p"
+					onChange={ this.onChangeEditable( 'placeholder' ) }
+					focus={ 'placeholder' === focusedEditable }
+					onFocus={ this.onFocus( 'placeholder' ) }
+					className="meetup-widgets-placeholder"
+					value={ attributes.placeholder }
+				/>
+			);
 		}
 		return (
 			<ul className="meetup-widgets-list">

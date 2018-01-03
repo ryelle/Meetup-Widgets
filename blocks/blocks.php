@@ -63,6 +63,10 @@ register_block_type( 'meetup-widgets/group-list', array(
 			'type' => 'string',
 			'default' => __( 'Upcoming Events', 'meetup-widgets' ),
 		),
+		'placeholder' => array(
+			'type' => 'string',
+			'default' => __( 'No upcoming events.', 'meetup-widgets' ),
+		),
 		'group' => array(
 			'type' => 'string',
 		),
