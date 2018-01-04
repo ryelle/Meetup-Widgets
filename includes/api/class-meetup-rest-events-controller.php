@@ -56,19 +56,19 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function get_items( $request ) {
-		$api    = new Meetup_API_V3();
-		$params = $request->get_params();
-		$count  = intval( $params['count'] );
+		$api       = new Meetup_API_V3();
+		$params    = $request->get_params();
+		$per_page  = intval( $params['per_page'] );
 		$args   = array(
 			'status' => 'upcoming',
-			'page'   => $count,
+			'page'   => $per_page,
 		);
 
 		if ( isset( $params['id'] ) ) {
 			$id = $params['id'];
-			$items = $api->get_events( $id, $args, 'vsm_v3_group_' . $id . '_' . $count );
+			$items = $api->get_events( $id, $args, 'vsm_v3_group_' . $id . '_' . $per_page );
 		} else {
-			$items = $api->get_self_events( $args, 'vsm_v3_self_' . $count );
+			$items = $api->get_self_events( $args, 'vsm_v3_self_' . $per_page );
 		}
 
 		if ( ! $items ) {
