@@ -14,7 +14,7 @@ const { Component } = wp.element;
 const {
 	Editable,
 	InspectorControls,
-	InspectorControls: { RangeControl, SelectControl },
+	InspectorControls: { RangeControl, SelectControl, TextControl },
 } = wp.blocks;
 const { Placeholder, Spinner, withAPIData } = wp.components;
 
@@ -51,16 +51,7 @@ class GroupListBlock extends Component {
 			return <p>{ data.message }</p>;
 		}
 		if ( ! data.length ) {
-			return (
-				<Editable
-					tagName="p"
-					onChange={ this.onChangeEditable( 'placeholder' ) }
-					focus={ 'placeholder' === focusedEditable }
-					onFocus={ this.onFocus( 'placeholder' ) }
-					className="meetup-widgets-placeholder"
-					value={ attributes.placeholder }
-				/>
-			);
+			return <p>{ attributes.placeholder }</p>;
 		}
 
 		const renderEvent = item => {
@@ -101,6 +92,11 @@ class GroupListBlock extends Component {
 					onChange={ this.onChangeEditable( 'per_page' ) }
 					min={ 2 }
 					max={ 15 }
+				/>
+				<TextControl
+					label={ translate( 'Text to display when there are no upcoming events' ) }
+					value={ attributes.placeholder }
+					onChange={ this.onChangeEditable( 'placeholder' ) }
 				/>
 			</InspectorControls>
 		);
