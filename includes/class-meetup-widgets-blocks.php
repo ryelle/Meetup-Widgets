@@ -43,6 +43,10 @@ class Meetup_Widgets_Blocks {
 					'type' => 'number',
 					'default' => 5,
 				),
+				'show_description' => array(
+					'type' => 'boolean',
+					'default' => false,
+				),
 			),
 			'render_callback' => array( $this, 'render_block_group_list' ),
 		) );

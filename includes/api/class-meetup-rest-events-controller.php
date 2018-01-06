@@ -148,13 +148,24 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 			$venue_str = '';
 		}
 
+		$description = '';
+		$excerpt = '';
+		if ( isset( $item->description ) ) {
+			$description = $item->description;
+			$excerpt = wp_trim_words( $item->description, 40, '…' );
+		}
+
+		$time_seconds = intval( $item->time / 1000 + $item->utc_offset / 1000 );
+
 		return array(
 			'id' => $item->id,
 			'name' => $item->name,
-			'description' => isset( $item->description ) ? $item->description : '',
+			'description' => $description,
+			'excerpt' => $excerpt,
 			'url' => $item->link,
 			'google_maps' => "http://maps.google.com/maps?q={$venue_str}&z=17",
-			'date' => date( 'M d, g:ia', intval( $item->time / 1000 + $item->utc_offset / 1000 ) ),
+			'date' => date( 'M d, g:ia', $time_seconds ),
+			'long_date' => date( 'l, F d, Y g:ia', $time_seconds ), // Thursday, December 14, 2017 6:30 PM
 			'raw_date' => $item->time,
 			'status' => $item->status,
 			'venue' => $venue,

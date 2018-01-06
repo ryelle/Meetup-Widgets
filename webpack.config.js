@@ -2,6 +2,7 @@
 
 const webpack = require( 'webpack' );
 const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const path = require( 'path' );
 
 // CSS loader for styles specific to blocks in general.
 const blocksCSSPlugin = new ExtractTextPlugin( {
@@ -35,6 +36,11 @@ module.exports = {
 				use: 'babel-loader',
 			},
 			{
+				test: /\.pug$/,
+				exclude: /node_modules/,
+				use: 'pug-loader',
+			},
+			{
 				test: /style\.css$/,
 				include: [ /blocks/ ],
 				use: blocksCSSPlugin.extract( extractConfig ),
@@ -44,6 +50,7 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin( {
 			'process.env.NODE_ENV': JSON.stringify( process.env.NODE_ENV || 'development' ),
+			'TEMPLATE_DIRECTORY': JSON.stringify( __dirname + '/includes/templates' ),
 		} ),
 		blocksCSSPlugin,
 	],

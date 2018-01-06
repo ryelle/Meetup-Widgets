@@ -6,6 +6,11 @@
 import { stringify } from 'qs';
 
 /**
+ * Internal Dependencies
+ */
+const runTemplate = require( TEMPLATE_DIRECTORY + '/meetup-list.pug' );
+
+/**
  * Core WP Dependencies
  */
 const { __ } = wp.i18n;
@@ -14,7 +19,7 @@ const { Component } = wp.element;
 const {
 	Editable,
 	InspectorControls,
-	InspectorControls: { RangeControl, SelectControl, TextControl },
+	InspectorControls: { RangeControl, SelectControl, TextControl, ToggleControl },
 } = wp.blocks;
 const { Placeholder, Spinner, withAPIData } = wp.components;
 
@@ -22,6 +27,7 @@ class GroupListBlock extends Component {
 	constructor() {
 		super( ...arguments );
 		this.onChangeEditable = this.onChangeEditable.bind( this );
+		this.onChangeToggle = this.onChangeToggle.bind( this );
 		this.onFocus = this.onFocus.bind( this );
 		this.renderEventsList = this.renderEventsList.bind( this );
 	}
@@ -30,16 +36,18 @@ class GroupListBlock extends Component {
 		return value => this.props.setAttributes( { [ field ]: value } );
 	}
 
+	onChangeToggle( field ) {
+		return () => this.props.setAttributes( { [ field ]: ! this.props.attributes[ field ] } );
+	}
+
 	onFocus( field ) {
 		return focus => this.props.setFocus( { ...focus, editable: field } );
 	}
 
 	renderEventsList() {
-		const { attributes, focus, events = {} } = this.props;
+		const { attributes, events = {} } = this.props;
 		const { isLoading, data = [] } = events;
-		const focusedEditable = focus ? focus.editable || 'title' : null;
 
-		console.log( 'events', isLoading, data );
 		if ( isLoading ) {
 			return (
 				<Placeholder icon="editor-list" label={ translate( 'Fetching Events…' ) }>
@@ -47,22 +55,8 @@ class GroupListBlock extends Component {
 				</Placeholder>
 			);
 		}
-		if ( data.code ) {
-			return <p>{ data.message }</p>;
-		}
-		if ( ! data.length ) {
-			return <p>{ attributes.placeholder }</p>;
-		}
 
-		const renderEvent = item => {
-			return (
-				<li key={ item.id }>
-					{ item.name } { item.date }
-				</li>
-			);
-		};
-
-		return <ul className="meetup-widgets-list">{ data.map( renderEvent ) }</ul>;
+		return { __html: runTemplate( { events: data, attributes } ) };
 	}
 
 	render() {
@@ -86,6 +80,11 @@ class GroupListBlock extends Component {
 					options={ groupOptions }
 					onChange={ this.onChangeEditable( 'group' ) }
 				/>
+				<ToggleControl
+					label={ translate( 'Show description' ) }
+					checked={ !! attributes.show_description }
+					onChange={ this.onChangeToggle( 'show_description' ) }
+				/>
 				<RangeControl
 					label={ translate( 'Number of event to show' ) }
 					value={ attributes.per_page }
@@ -101,6 +100,8 @@ class GroupListBlock extends Component {
 			</InspectorControls>
 		);
 
+		const list = this.renderEventsList();
+
 		return [
 			controls,
 			<div className="meetup-widgets" key="meetup-display">
@@ -113,7 +114,7 @@ class GroupListBlock extends Component {
 					className="meetup-widgets-title"
 					value={ attributes.title }
 				/>
-				{ this.renderEventsList() }
+				{ list.__html ? <div dangerouslySetInnerHTML={ this.renderEventsList() } /> : list }
 			</div>,
 		];
 	}
