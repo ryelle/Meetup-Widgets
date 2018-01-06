@@ -87,7 +87,6 @@ class Meetup_Widgets_Blocks {
 
 		$events = $response->get_data();
 		$block_content = [ '<h3>' . $attributes['title'] . '</h3>', '<ul>' ];
-		array_push( $block_content, '<p>' . $attributes['group'] . '</p>' );
 		foreach ( $events as $event ) {
 			$list_item = '<li>' . $event['name'] . ' ' . $event['date'] . '</li>';
 			array_push( $block_content, $list_item );

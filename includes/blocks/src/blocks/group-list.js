@@ -62,15 +62,16 @@ class GroupListBlock extends Component {
 				/>
 			);
 		}
-		return (
-			<ul className="meetup-widgets-list">
-				{ data.map( item => (
-					<li key={ item.id }>
-						{ item.name } { item.date }
-					</li>
-				) ) }
-			</ul>
-		);
+
+		const renderEvent = item => {
+			return (
+				<li key={ item.id }>
+					{ item.name } { item.date }
+				</li>
+			);
+		};
+
+		return <ul className="meetup-widgets-list">{ data.map( renderEvent ) }</ul>;
 	}
 
 	render() {
