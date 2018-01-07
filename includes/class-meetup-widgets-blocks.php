@@ -24,7 +24,7 @@ class Meetup_Widgets_Blocks {
 	public function __construct() {
 		$this->dir = dirname( dirname( __FILE__ ) );
 
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_assets' ) );
+		$this->register_block_assets();
 
 		register_block_type( 'meetup-widgets/group-list', array(
 			'attributes' => array(
@@ -49,13 +49,15 @@ class Meetup_Widgets_Blocks {
 				),
 			),
 			'render_callback' => array( $this, 'render_block_group_list' ),
+			'editor_script' => 'meetup-blocks',
+			'editor_style' => 'meetup-blocks',
 		) );
 	}
 
 	/**
 	 * Add Gutenberg block JS & CSS to the editor
 	 */
-	public function enqueue_block_assets() {
+	public function register_block_assets() {
 		$js_file = 'http://localhost:8081/build/index.js';
 		$css_file = 'http://localhost:8081/build/editor.css';
 		$js_version = false;
@@ -68,8 +70,8 @@ class Meetup_Widgets_Blocks {
 			$css_version = filemtime( "{$this->dir}/build/editor.css" );
 		}
 
-		wp_enqueue_script( 'meetup-blocks', $js_file, [ 'wp-blocks', 'wp-i18n', 'wp-element' ], $js_version );
-		wp_enqueue_style( 'meetup-blocks', $css_file, [ 'wp-blocks' ], $css_version );
+		wp_register_script( 'meetup-blocks', $js_file, [ 'wp-blocks', 'wp-i18n', 'wp-element' ], $js_version );
+		wp_register_style( 'meetup-blocks', $css_file, [ 'wp-blocks' ], $css_version );
 	}
 
 	/**
