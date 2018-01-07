@@ -5,7 +5,7 @@
  * @package Meetup_Widgets
  * @since 3.0.0
  */
-use Pug\Pug;
+use Handlebars\Handlebars;
 
 /**
  * Container for block functionality
@@ -45,7 +45,7 @@ class Meetup_Widgets_Blocks {
 				),
 				'show_description' => array(
 					'type' => 'boolean',
-					'default' => false,
+					'default' => true,
 				),
 			),
 			'render_callback' => array( $this, 'render_block_group_list' ),
@@ -82,8 +82,15 @@ class Meetup_Widgets_Blocks {
 	 * @return string Returns the post content with latest posts added.
 	 */
 	public function render_block_group_list( $attributes ) {
-		$pug = new Pug( array(
-			'expressionLanguage' => 'php',
+		// Initialize handlebars
+		$loader = new \Handlebars\Loader\FilesystemLoader(
+			VSMEET_TEMPLATE_DIR,
+			array(
+				'extension' => 'hbs',
+			)
+		);
+		$engine = new Handlebars( array(
+			'loader' => $loader,
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/' . $attributes['group'] );
@@ -93,12 +100,15 @@ class Meetup_Widgets_Blocks {
 		$response = rest_do_request( $request );
 		$events = $response->get_data();
 
+		$has_events = count( $events ) > 0;
+
 		$vars = [
-			'events' => $events,
-			'has_events' => count( $events ) > 0,
 			'attributes' => $attributes,
+			'events' => $events,
+			'show_events' => $has_events,
+			'show_events_description' => $has_events && $attributes['show_description'],
 		];
-		$output = $pug->render( VSMEET_TEMPLATE_DIR . '/meetup-list.pug', $vars );
+		$output = $engine->render( 'meetup-list', $vars );
 
 		return $output;
 	}

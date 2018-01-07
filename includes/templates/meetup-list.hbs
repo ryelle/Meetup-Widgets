@@ -1,0 +1,23 @@
+{{#if show_events_description}}
+	<ul class="meetup-list.meetup-group-list">
+		{{#each events}}
+			<li>
+				<h4><a href="{{this.url}}">{{this.name}}</a></h4>
+				<div class="event-meta">{{this.long_date}}</div>
+				<p>{{this.excerpt}}</p>
+			</li>
+		{{/each}}
+	</ul>
+{{else}}
+	{{#if show_events}}
+		<ul class="meetup-list.meetup-group-list">
+			{{#each events}}
+				<li>
+					<a href="{{this.url}}">{{this.name}} {{this.date}}</a>
+				</li>
+			{{/each}}
+		</ul>
+	{{else}}
+		<p>{{attributes.placeholder}}
+	{{/if}}
+{{/if}}

@@ -8,7 +8,7 @@ import { stringify } from 'qs';
 /**
  * Internal Dependencies
  */
-const runTemplate = require( TEMPLATE_DIRECTORY + '/meetup-list.pug' );
+const runTemplate = require( TEMPLATE_DIRECTORY + '/meetup-list.hbs' );
 
 /**
  * Core WP Dependencies
@@ -56,7 +56,14 @@ class GroupListBlock extends Component {
 			);
 		}
 
-		return { __html: runTemplate( { events: data, has_events: !! data.length, attributes } ) };
+		const vars = {
+			attributes,
+			events: data,
+			show_events: !! data.length,
+			show_events_description: !! data.length && attributes.show_description,
+		};
+
+		return { __html: runTemplate( vars ) };
 	}
 
 	render() {
