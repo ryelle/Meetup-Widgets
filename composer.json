@@ -2,6 +2,7 @@
     "name": "ryelle/meetup-widgets",
     "type": "project",
     "require": {
+        "php": ">=5.6",
         "pug-php/pug": "^3.1"
     },
     "license": "GPL-2.0+",
