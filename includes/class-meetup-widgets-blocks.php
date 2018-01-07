@@ -82,17 +82,17 @@ class Meetup_Widgets_Blocks {
 	 * @return string Returns the post content with latest posts added.
 	 */
 	public function render_block_group_list( $attributes ) {
+		$pug = new Pug( array(
+			'expressionLanguage' => 'php',
+		) );
+
 		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/' . $attributes['group'] );
 		$request->set_query_params( array(
 			'per_page' => $attributes['per_page'],
 		) );
 		$response = rest_do_request( $request );
-		if ( 200 !== $response->get_status() ) {
-			return '<h3>' . $attributes['title'] . '</h3>';
-		}
 		$events = $response->get_data();
 
-		$pug = new Pug();
 		$vars = [
 			'events' => $events,
 			'has_events' => count( $events ) > 0,

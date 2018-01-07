@@ -1,15 +1,15 @@
-if events.code
-	p= events.message
-else if ! has_events
-	p= attributes.placeholder
+if isset( $events['code'] )
+	p= $events['message']
+else if ! $has_events
+	p= $attributes['placeholder']
 else
 	ul.meetup-list.meetup-group-list
-		each event in events
+		each $event in $events
 			li
-				if attributes.show_description
+				if $attributes['show_description']
 					h4
-						a(href=event.url)= event.name
-					div.event-meta= event.long_date
-					p= event.excerpt
+						a(href=event.url)= $event['name']
+					div.event-meta= $event['long_date']
+					p= $event['excerpt']
 				else
-					a(href=event.url) !{event.name}, !{event.date}
+					a(href=$event['url']) !{$event['name']}, !{$event['date']}
