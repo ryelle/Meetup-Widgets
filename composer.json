@@ -1,0 +1,14 @@
+{
+    "name": "ryelle/meetup-widgets",
+    "type": "project",
+    "require": {
+        "pug-php/pug": "^3.1"
+    },
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Kelly Dwan"
+        }
+    ],
+    "minimum-stability": "stable"
+}

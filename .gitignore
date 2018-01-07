@@ -15,3 +15,6 @@ yarn.lock
 package-lock.json
 mock-data
 build
+
+/vendor/
+composer.lock

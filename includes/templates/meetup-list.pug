@@ -1,6 +1,6 @@
 if events.code
 	p= events.message
-else if ! events.length
+else if ! has_events
 	p= attributes.placeholder
 else
 	ul.meetup-list.meetup-group-list

@@ -20,6 +20,8 @@ if ( ! defined( 'VSMEET_TEMPLATE_DIR' ) ) {
 	define( 'VSMEET_TEMPLATE_DIR', dirname( __FILE__ ) . '/includes/templates/' );
 }
 
+require_once( 'vendor/autoload.php' );
+
 require_once( 'includes/class-meetup-widget.php' );
 require_once( 'includes/class-meetup-widgets-admin.php' );
 require_once( 'includes/class-meetup-widgets-blocks.php' );

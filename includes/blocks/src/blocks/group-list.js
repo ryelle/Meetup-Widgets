@@ -56,7 +56,7 @@ class GroupListBlock extends Component {
 			);
 		}
 
-		return { __html: runTemplate( { events: data, attributes } ) };
+		return { __html: runTemplate( { events: data, has_events: !! data.length, attributes } ) };
 	}
 
 	render() {

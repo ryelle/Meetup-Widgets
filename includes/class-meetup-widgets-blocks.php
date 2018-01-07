@@ -5,7 +5,7 @@
  * @package Meetup_Widgets
  * @since 3.0.0
  */
-
+use Pug\Pug;
 
 /**
  * Container for block functionality
@@ -88,15 +88,16 @@ class Meetup_Widgets_Blocks {
 		if ( 200 !== $response->get_status() ) {
 			return '<h3>' . $attributes['title'] . '</h3>';
 		}
-
 		$events = $response->get_data();
-		$block_content = [ '<h3>' . $attributes['title'] . '</h3>', '<ul>' ];
-		foreach ( $events as $event ) {
-			$list_item = '<li>' . $event['name'] . ' ' . $event['date'] . '</li>';
-			array_push( $block_content, $list_item );
-		}
-		array_push( $block_content, '</ul>' );
 
-		return implode( "\n", $block_content );
+		$pug = new Pug();
+		$vars = [
+			'events' => $events,
+			'has_events' => count( $events ) > 0,
+			'attributes' => $attributes,
+		];
+		$output = $pug->render( VSMEET_TEMPLATE_DIR . '/meetup-list.pug', $vars );
+
+		return $output;
 	}
 }
