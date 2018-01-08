@@ -52,6 +52,29 @@ class Meetup_Widgets_Blocks {
 			'editor_script' => 'meetup-blocks',
 			'editor_style' => 'meetup-blocks',
 		) );
+		register_block_type( 'meetup-widgets/user-list', array(
+			'attributes' => array(
+				'title' => array(
+					'type' => 'string',
+					'default' => __( 'My Events', 'meetup-widgets' ),
+				),
+				'placeholder' => array(
+					'type' => 'string',
+					'default' => __( 'No upcoming events.', 'meetup-widgets' ),
+				),
+				'per_page' => array(
+					'type' => 'number',
+					'default' => 5,
+				),
+				'show_description' => array(
+					'type' => 'boolean',
+					'default' => true,
+				),
+			),
+			'render_callback' => array( $this, 'render_block_user_list' ),
+			'editor_script' => 'meetup-blocks',
+			'editor_style' => 'meetup-blocks',
+		) );
 	}
 
 	/**
@@ -75,11 +98,11 @@ class Meetup_Widgets_Blocks {
 	}
 
 	/**
-	 * Renders the `core/latest-posts` block on server.
+	 * Renders the `meetup-widgets/group-list` block on server.
 	 *
 	 * @param array $attributes The block attributes.
 	 *
-	 * @return string Returns the post content with latest posts added.
+	 * @return string Returns the upcoming events for a given group, to be displayed in a post
 	 */
 	public function render_block_group_list( $attributes ) {
 		// Initialize handlebars
@@ -94,6 +117,46 @@ class Meetup_Widgets_Blocks {
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/' . $attributes['group'] );
+		$request->set_query_params( array(
+			'per_page' => $attributes['per_page'],
+		) );
+		$response = rest_do_request( $request );
+		$events = $response->get_data();
+
+		$has_events = count( $events ) > 0;
+
+		$vars = [
+			'attributes' => $attributes,
+			'events' => $events,
+			'hide_title' => false,
+			'show_events' => $has_events,
+			'show_events_description' => $has_events && $attributes['show_description'],
+		];
+		$output = $engine->render( 'meetup-list', $vars );
+
+		return $output;
+	}
+
+	/**
+	 * Renders the `meetup-widgets/user-list` block on server.
+	 *
+	 * @param array $attributes The block attributes.
+	 *
+	 * @return string Returns the upcoming events for the current API user, to be displayed in a post
+	 */
+	public function render_block_user_list( $attributes ) {
+		// Initialize handlebars
+		$loader = new \Handlebars\Loader\FilesystemLoader(
+			VSMEET_TEMPLATE_DIR,
+			array(
+				'extension' => 'hbs',
+			)
+		);
+		$engine = new Handlebars( array(
+			'loader' => $loader,
+		) );
+
+		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/self' );
 		$request->set_query_params( array(
 			'per_page' => $attributes['per_page'],
 		) );
