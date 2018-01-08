@@ -105,6 +105,7 @@ class Meetup_Widgets_Blocks {
 		$vars = [
 			'attributes' => $attributes,
 			'events' => $events,
+			'hide_title' => false,
 			'show_events' => $has_events,
 			'show_events_description' => $has_events && $attributes['show_description'],
 		];

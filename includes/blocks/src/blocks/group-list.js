@@ -59,6 +59,7 @@ class GroupListBlock extends Component {
 		const vars = {
 			attributes,
 			events: data,
+			hide_title: true, // title is <Editable /> here, so we hide it in the final template.
 			show_events: !! data.length,
 			show_events_description: !! data.length && attributes.show_description,
 		};
