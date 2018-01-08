@@ -166,6 +166,7 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 			'google_maps' => "http://maps.google.com/maps?q={$venue_str}&z=17",
 			'date' => date( 'M d, g:ia', $time_seconds ),
 			'long_date' => date( 'l, F d, Y g:ia', $time_seconds ), // Thursday, December 14, 2017 6:30 PM
+			'datetime' => date( 'c', $time_seconds ), // 2017-03-19T04:39:44+00:00
 			'raw_date' => $item->time,
 			'status' => $item->status,
 			'venue' => $venue,

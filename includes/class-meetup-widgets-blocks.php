@@ -52,6 +52,7 @@ class Meetup_Widgets_Blocks {
 			'editor_script' => 'meetup-blocks',
 			'editor_style' => 'meetup-blocks',
 		) );
+
 		register_block_type( 'meetup-widgets/user-list', array(
 			'attributes' => array(
 				'title' => array(
@@ -75,6 +76,10 @@ class Meetup_Widgets_Blocks {
 			'editor_script' => 'meetup-blocks',
 			'editor_style' => 'meetup-blocks',
 		) );
+
+		add_action( 'wp_enqueue_scripts', function() {
+			wp_enqueue_style( 'meetup-blocks' );
+		} );
 	}
 
 	/**

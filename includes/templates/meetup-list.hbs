@@ -1,27 +1,29 @@
 <div class="wp-block-meetup-events">
 	{{#unless hide_title}}
-		<h3>{{attributes.title}}</h3>
+		<h3 class="meetup-events__title">{{attributes.title}}</h3>
 	{{/unless}}
 	{{#if show_events_description}}
 		{{#each events}}
-			<div>
-				<h4><a href="{{this.url}}">{{this.name}}</a></h4>
-				<time datetime="2017-03-19T04:39:44+00:00" class="wp-block-latest-posts__post-date">March 19, 2017</time> -->
-				<div class="event-meta">{{this.long_date}}</div>
-				<p>{{this.excerpt}}</p>
+			<div class="meetup-events__event">
+				<h4 class="meetup-events__event-title">
+					<a class="meetup-events__event-link" href="{{this.url}}">{{this.name}}</a>
+				</h4>
+				<time class="meetup-events__event-date" datetime="{{this.datetime}}">{{this.long_date}}</time>
+				<p class="meetup-events__event-excerpt">{{this.excerpt}}</p>
 			</div>
 		{{/each}}
 	{{else}}
 		{{#if show_events}}
-			<ul class="meetup-events-list meetup-group-list">
+			<ul class="meetup-events__list">
 				{{#each events}}
-					<li>
-						<a href="{{this.url}}">{{this.name}} {{this.date}}</a>
+					<li class="meetup-events__event">
+						<a class="meetup-events__event-link" href="{{this.url}}">{{this.name}}</a>
+						<time class="meetup-events__event-date" datetime="{{this.datetime}}">{{this.long_date}}</time>
 					</li>
 				{{/each}}
 			</ul>
 		{{else}}
-			<p>{{attributes.placeholder}}
+			<p class="meetup-events__no-events">{{attributes.placeholder}}
 		{{/if}}
 	{{/if}}
 </div>
