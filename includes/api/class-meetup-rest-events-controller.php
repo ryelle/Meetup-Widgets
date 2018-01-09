@@ -179,11 +179,17 @@ class Meetup_REST_Events_Controller extends WP_REST_Controller {
 	 * Check permissions for this endpoint.
 	 *
 	 * Only logged-in users can use this proxy, to prevent anonymous users from
-	 * spamming the meetup.com API with the site-owner's API key.
+	 * spamming the meetup.com API with the site-owner's API key. The exception
+	 * to this is requests from the server itself, which are ID'd by having the
+	 * nonce `X-MW-Nonce`. This is not revealed client-side, so is safe to use
+	 * as a "security" measure.
 	 *
 	 * @param WP_REST_Request $request Current request.
 	 */
 	public function get_items_permissions_check( $request ) {
+		if ( wp_verify_nonce( $request->get_header( 'x-mw-nonce' ), 'meetup-widgets' ) ) {
+			return true;
+		}
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			return new WP_Error(
 				'rest_forbidden',

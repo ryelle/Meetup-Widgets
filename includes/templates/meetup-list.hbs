@@ -23,7 +23,11 @@
 				{{/each}}
 			</ul>
 		{{else}}
-			<p class="meetup-events__no-events">{{attributes.placeholder}}
+			{{#if events.code }}
+				<p class="meetup-events__no-events">{{events.message}}</p>
+			{{else}}
+				<p class="meetup-events__no-events">{{attributes.placeholder}}</p>
+			{{/if}}
 		{{/if}}
 	{{/if}}
 </div>

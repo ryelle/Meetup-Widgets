@@ -122,13 +122,14 @@ class Meetup_Widgets_Blocks {
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/' . $attributes['group'] );
+		$request->set_header( 'x-mw-nonce', wp_create_nonce( 'meetup-widgets' ) );
 		$request->set_query_params( array(
 			'per_page' => $attributes['per_page'],
 		) );
 		$response = rest_do_request( $request );
 		$events = $response->get_data();
 
-		$has_events = count( $events ) > 0;
+		$has_events = ! isset( $events['code'] ) && count( $events ) > 0;
 
 		$vars = [
 			'attributes' => $attributes,
@@ -162,6 +163,7 @@ class Meetup_Widgets_Blocks {
 		) );
 
 		$request = new WP_REST_Request( 'GET', '/meetup/v1/events/self' );
+		$request->set_header( 'x-mw-nonce', wp_create_nonce( 'meetup-widgets' ) );
 		$request->set_query_params( array(
 			'per_page' => $attributes['per_page'],
 		) );
