@@ -1,6 +1,6 @@
 {
   "name": "meetup-widgets",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "description": "Adds widgets displaying information from a meetup.com group.",
   "main": "index.js",
   "scripts": {

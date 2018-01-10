@@ -1,10 +1,10 @@
 === Meetup Widgets ===
 Contributors: ryelle
-Tags: meetup, meetups, meetup.com, widget,
+Tags: meetup, meetups, meetup.com, widget, gutenberg
 Requires at least: 4.8
 Requires PHP: 5.6
 Tested up to: 4.9
-Stable tag: 2.3.0
+Stable tag: 3.0.0
 
 Adds widgets displaying information from a meetup.com group.
 
@@ -52,10 +52,16 @@ Previous to version 3.0, this plugin had a feature where you could RSVP to an ev
 
 = 3.0.0 =
 
-* Removal of OAuth
-* Refactor widgets into new `widgets/*` files
-* Move templates into `templates/` folder
-* Add PHP CodeSniffer, clean up flagged issues
+* NEW: Gutenberg support: 2 new blocks for listing events
+* NEW: API endpoints for fetching Meetup.com data
+* BREAKING: Removal of OAuth RSVP feature
+* BREAKING: Set minimum PHP version to 5.6
+* UPDATE: Refactor basically the entire plugin
+* UPDATE: Refactor widgets into new `includes/widgets/*` files
+* UPDATE: Move templates into `includes/templates/` folder
+* DEVELOPER: Add PHP CodeSniffer, clean up flagged issues
+* DEVELOPER: Add webpack, babel, eslint for building gutenberg blocks
+* DEVELOPER: Add Handlebars for the gutenberg block templates (widgets still use themeable php templates)
 
 = 2.2.1 =
 

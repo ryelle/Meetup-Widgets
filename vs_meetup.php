@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Meetup Widgets
  * Description: Add widgets displaying information from Meetup.com
- * Version: 2.2.1
+ * Version: 3.0.0
  * Author: Kelly Dwan
  * Author URI: http://redradar.net
  * Plugin URI: http://redradar.net/category/plugins/meetup-widgets/
