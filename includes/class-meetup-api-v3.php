@@ -47,6 +47,9 @@ class Meetup_API_V3 {
 		if ( $transient ) {
 			$data = get_transient( $transient );
 		}
+		if ( empty( $this->api_key ) ) {
+			return new WP_Error( 'undefined_key', __( 'Please enter an API key.', 'meetup-widgets' ) );
+		}
 
 		$defaults = array(
 			'key' => $this->api_key,
@@ -88,6 +91,9 @@ class Meetup_API_V3 {
 		$data = false;
 		if ( $transient ) {
 			$data = get_transient( $transient );
+		}
+		if ( empty( $this->api_key ) ) {
+			return new WP_Error( 'undefined_key', __( 'Please enter an API key.', 'meetup-widgets' ) );
 		}
 
 		$defaults = array(
@@ -134,6 +140,10 @@ class Meetup_API_V3 {
 		if ( ! $event ) {
 			return new WP_Error( 'undefined_event', __( 'Requested event ID missing.', 'meetup-widgets' ) );
 		}
+		if ( empty( $this->api_key ) ) {
+			return new WP_Error( 'undefined_key', __( 'Please enter an API key.', 'meetup-widgets' ) );
+		}
+
 		$data = false;
 		if ( $transient ) {
 			$data = get_transient( $transient );
@@ -174,6 +184,9 @@ class Meetup_API_V3 {
 		$data = false;
 		if ( $transient ) {
 			$data = get_transient( $transient );
+		}
+		if ( empty( $this->api_key ) ) {
+			return new WP_Error( 'undefined_key', __( 'Please enter an API key.', 'meetup-widgets' ) );
 		}
 
 		$args = array(

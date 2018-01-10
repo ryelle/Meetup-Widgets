@@ -21,7 +21,7 @@ const {
 	InspectorControls,
 	InspectorControls: { RangeControl, SelectControl, TextControl, ToggleControl },
 } = wp.blocks;
-const { Placeholder, Spinner, withAPIData } = wp.components;
+const { Dashicon, Placeholder, Spinner, withAPIData } = wp.components;
 
 class GroupListBlock extends Component {
 	constructor() {
@@ -46,7 +46,22 @@ class GroupListBlock extends Component {
 
 	renderEventsList() {
 		const { attributes, events = {} } = this.props;
-		const { isLoading, data = [] } = events;
+		const { isLoading, error, data = [] } = events;
+
+		/* eslint-disable yoda */
+		if ( error && error.status > 200 ) {
+			let message = translate( 'There was an error loading the API for this block' );
+			if ( error.resposeJSON && error.resposeJSON.message ) {
+				message = error.resposeJSON.message;
+			}
+
+			return (
+				<Placeholder label={ message }>
+					<Dashicon icon="warning" />
+				</Placeholder>
+			);
+		}
+		/* eslint-enable yoda */
 
 		if ( isLoading ) {
 			return (
