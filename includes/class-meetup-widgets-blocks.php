@@ -24,6 +24,12 @@ class Meetup_Widgets_Blocks {
 	public function __construct() {
 		$this->dir = dirname( dirname( __FILE__ ) );
 
+		// Check for Gutenberg
+		if ( ! function_exists( 'register_block_type' ) ) {
+			// No Gutenberg 😭
+			return;
+		}
+
 		$this->register_block_assets();
 
 		register_block_type( 'meetup-widgets/group-list', array(
