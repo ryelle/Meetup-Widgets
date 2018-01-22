@@ -53,15 +53,16 @@ Previous to version 3.0, this plugin had a feature where you could RSVP to an ev
 = 3.0.0 =
 
 * NEW: Gutenberg support: 2 new blocks for listing events
-* NEW: API endpoints for fetching Meetup.com data
+* NEW: Internal API endpoints for fetching Meetup.com data
 * BREAKING: Removal of OAuth RSVP feature
+* BREAKING: Removed themeable meetup-list template in favor of standardizing with gutenberg blocks
 * BREAKING: Set minimum PHP version to 5.6
 * UPDATE: Refactor basically the entire plugin
 * UPDATE: Refactor widgets into new `includes/widgets/*` files
 * UPDATE: Move templates into `includes/templates/` folder
 * DEVELOPER: Add PHP CodeSniffer, clean up flagged issues
 * DEVELOPER: Add webpack, babel, eslint for building gutenberg blocks
-* DEVELOPER: Add Handlebars for the gutenberg block templates (widgets still use themeable php templates)
+* DEVELOPER: Add Handlebars for the gutenberg block templates
 
 = 2.2.1 =
 
