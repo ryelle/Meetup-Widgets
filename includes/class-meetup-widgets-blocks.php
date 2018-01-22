@@ -97,7 +97,7 @@ class Meetup_Widgets_Blocks {
 		$js_version = false;
 		$css_version = false;
 
-		if ( ! WP_DEBUG ) {
+		if ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ) {
 			$js_file = plugins_url( 'build/index.js', dirname( __FILE__ ) );
 			$css_file = plugins_url( 'build/editor.css', dirname( __FILE__ ) );
 			$js_version = filemtime( "{$this->dir}/build/index.js" );
@@ -111,11 +111,18 @@ class Meetup_Widgets_Blocks {
 	/**
 	 * Renders the `meetup-widgets/group-list` block on server.
 	 *
-	 * @param array $attributes The block attributes.
-	 *
+	 * @param array $attributes {
+	 *     The block attributes.
+	 *     @type string $title            Title to display.
+	 *     @type string $group            URL name of the group.
+	 *     @type int    $per_page         Number of events to display.
+	 *     @type bool   $show_description Show the description in the list. Also switches to a more
+	 *                                    verbose display of event data.
+	 *     @type string $placeholder      A placeholder shown when there are no events.
+	 * }
 	 * @return string Returns the upcoming events for a given group, to be displayed in a post
 	 */
-	public function render_block_group_list( $attributes ) {
+	public static function render_block_group_list( $attributes ) {
 		// Initialize handlebars
 		$loader = new \Handlebars\Loader\FilesystemLoader(
 			VSMEET_TEMPLATE_DIR,
@@ -152,11 +159,17 @@ class Meetup_Widgets_Blocks {
 	/**
 	 * Renders the `meetup-widgets/user-list` block on server.
 	 *
-	 * @param array $attributes The block attributes.
-	 *
+	 * @param array $attributes {
+	 *     The block attributes.
+	 *     @type string $title            Title to display.
+	 *     @type int    $per_page         Number of events to display.
+	 *     @type bool   $show_description Show the description in the list. Also switches to a more
+	 *                                    verbose display of event data.
+	 *     @type string $placeholder      A placeholder shown when there are no events.
+	 * }
 	 * @return string Returns the upcoming events for the current API user, to be displayed in a post
 	 */
-	public function render_block_user_list( $attributes ) {
+	public static function render_block_user_list( $attributes ) {
 		// Initialize handlebars
 		$loader = new \Handlebars\Loader\FilesystemLoader(
 			VSMEET_TEMPLATE_DIR,
