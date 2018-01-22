@@ -98,7 +98,7 @@ class GroupListBlock extends Component {
 		const controls = focus && (
 			<InspectorControls key="meetup-inspector">
 				<SelectControl
-					label={ translate( 'Group Name' ) }
+					label={ translate( 'Meetup Group' ) }
 					value={ attributes.group }
 					options={ groupOptions }
 					onChange={ this.onChangeEditable( 'group' ) }
