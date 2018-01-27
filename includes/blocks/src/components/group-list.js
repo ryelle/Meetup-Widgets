@@ -109,7 +109,7 @@ class GroupListBlock extends Component {
 					onChange={ this.onChangeToggle( 'show_description' ) }
 				/>
 				<RangeControl
-					label={ translate( 'Number of event to show' ) }
+					label={ translate( 'Number of events to show' ) }
 					value={ attributes.per_page }
 					onChange={ this.onChangeEditable( 'per_page' ) }
 					min={ 2 }
