@@ -1,7 +1,6 @@
+/** @format */
 /**
  * External Dependencies
- *
- * @format
  */
 import { stringify } from 'qs';
 
@@ -14,14 +13,17 @@ const runTemplate = require( TEMPLATE_DIRECTORY + '/meetup-list.hbs' );
  * Core WP Dependencies
  */
 const { __ } = wp.i18n;
-const translate = str => __( str, 'meetup-widgets' );
 const { Component } = wp.element;
+const { RichText, InspectorControls } = wp.blocks;
 const {
-	RichText,
-	InspectorControls,
-	InspectorControls: { RangeControl, TextControl, ToggleControl },
-} = wp.blocks;
-const { Dashicon, Placeholder, Spinner, withAPIData } = wp.components;
+	Dashicon,
+	Placeholder,
+	RangeControl,
+	Spinner,
+	TextControl,
+	ToggleControl,
+	withAPIData,
+} = wp.components;
 
 class UserListBlock extends Component {
 	constructor() {
@@ -37,7 +39,10 @@ class UserListBlock extends Component {
 	}
 
 	onChangeToggle( field ) {
-		return () => this.props.setAttributes( { [ field ]: ! this.props.attributes[ field ] } );
+		return () =>
+			this.props.setAttributes( {
+				[ field ]: ! this.props.attributes[ field ],
+			} );
 	}
 
 	onFocus( field ) {
@@ -50,7 +55,10 @@ class UserListBlock extends Component {
 
 		/* eslint-disable yoda */
 		if ( error && error.status > 200 ) {
-			let message = translate( 'There was an error loading the API for this block' );
+			let message = __(
+				'There was an error loading the API for this block',
+				'meetup-widgets'
+			);
 			if ( error.resposeJSON && error.resposeJSON.message ) {
 				message = error.resposeJSON.message;
 			}
@@ -65,7 +73,9 @@ class UserListBlock extends Component {
 
 		if ( isLoading ) {
 			return (
-				<Placeholder icon="editor-list" label={ translate( 'Fetching Events…' ) }>
+				<Placeholder
+					icon="editor-list"
+					label={ __( 'Fetching Events…', 'meetup-widgets' ) }>
 					<Spinner />
 				</Placeholder>
 			);
@@ -76,7 +86,8 @@ class UserListBlock extends Component {
 			events: data,
 			hide_title: true, // title is <Editable /> here, so we hide it in the final template.
 			show_events: !! data.length,
-			show_events_description: !! data.length && attributes.show_description,
+			show_events_description:
+				!! data.length && attributes.show_description,
 		};
 
 		return { __html: runTemplate( vars ) };
@@ -89,19 +100,22 @@ class UserListBlock extends Component {
 		const controls = focus && (
 			<InspectorControls key="meetup-inspector">
 				<ToggleControl
-					label={ translate( 'Show description' ) }
+					label={ __( 'Show description', 'meetup-widgets' ) }
 					checked={ !! attributes.show_description }
 					onChange={ this.onChangeToggle( 'show_description' ) }
 				/>
 				<RangeControl
-					label={ translate( 'Number of events to show' ) }
+					label={ __( 'Number of events to show', 'meetup-widgets' ) }
 					value={ attributes.per_page }
 					onChange={ this.onChangeEditable( 'per_page' ) }
 					min={ 1 }
 					max={ 15 }
 				/>
 				<TextControl
-					label={ translate( 'Text to display when there are no upcoming events' ) }
+					label={ __(
+						'Text to display when there are no upcoming events',
+						'meetup-widgets'
+					) }
 					value={ attributes.placeholder }
 					onChange={ this.onChangeEditable( 'placeholder' ) }
 				/>
@@ -115,14 +129,18 @@ class UserListBlock extends Component {
 			<div className="meetup-widgets" key="meetup-display">
 				<RichText
 					tagName="h3"
-					placeholder={ translate( 'My Events' ) }
+					placeholder={ __( 'My Events', 'meetup-widgets' ) }
 					onChange={ this.onChangeEditable( 'title' ) }
 					focus={ 'title' === focusedEditable }
 					onFocus={ this.onFocus( 'title' ) }
 					className="meetup-widgets-title"
 					value={ attributes.title }
 				/>
-				{ list.__html ? <div dangerouslySetInnerHTML={ this.renderEventsList() } /> : list }
+				{ list.__html ? (
+					<div dangerouslySetInnerHTML={ this.renderEventsList() } />
+				) : (
+					list
+				) }
 			</div>,
 		];
 	}
