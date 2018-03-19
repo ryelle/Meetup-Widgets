@@ -7,6 +7,7 @@
  * Author URI: http://redradar.net
  * Plugin URI: http://redradar.net/category/plugins/meetup-widgets/
  * License: GPL2
+ * Text Domain: meetup-widgets
  * Date: 01.06.2016
  *
  * @package Meetup_Widgets

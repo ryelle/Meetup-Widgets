@@ -17,7 +17,7 @@ const { __ } = wp.i18n;
 const translate = str => __( str, 'meetup-widgets' );
 const { Component } = wp.element;
 const {
-	Editable,
+	RichText,
 	InspectorControls,
 	InspectorControls: { RangeControl, SelectControl, TextControl, ToggleControl },
 } = wp.blocks;
@@ -128,7 +128,7 @@ class GroupListBlock extends Component {
 		return [
 			controls,
 			<div className="meetup-widgets" key="meetup-display">
-				<Editable
+				<RichText
 					tagName="h3"
 					placeholder={ translate( 'Upcoming Events' ) }
 					onChange={ this.onChangeEditable( 'title' ) }
