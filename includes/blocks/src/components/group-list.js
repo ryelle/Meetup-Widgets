@@ -112,7 +112,7 @@ class GroupListBlock extends Component {
 					label={ translate( 'Number of events to show' ) }
 					value={ attributes.per_page }
 					onChange={ this.onChangeEditable( 'per_page' ) }
-					min={ 2 }
+					min={ 1 }
 					max={ 15 }
 				/>
 				<TextControl
