@@ -35,8 +35,10 @@ class Meetup_Widgets_Blocks {
 		register_block_type( 'meetup-widgets/group-list', array(
 			'attributes' => array(
 				'title' => array(
-					'type' => 'string',
-					'default' => __( 'Upcoming Events', 'meetup-widgets' ),
+					'type' => 'array',
+					'items' => array(
+						'type' => 'string'
+					),
 				),
 				'placeholder' => array(
 					'type' => 'string',
@@ -62,8 +64,10 @@ class Meetup_Widgets_Blocks {
 		register_block_type( 'meetup-widgets/user-list', array(
 			'attributes' => array(
 				'title' => array(
-					'type' => 'string',
-					'default' => __( 'My Events', 'meetup-widgets' ),
+					'type' => 'array',
+					'items' => array(
+						'type' => 'string'
+					),
 				),
 				'placeholder' => array(
 					'type' => 'string',
@@ -144,10 +148,13 @@ class Meetup_Widgets_Blocks {
 
 		$has_events = ! isset( $events['code'] ) && count( $events ) > 0;
 
+		if ( is_array( $attributes['title'] ) ) {
+			$attributes['title'] = join( ' ', $attributes['title'] );
+		}
 		$vars = [
 			'attributes' => $attributes,
 			'events' => $events,
-			'hide_title' => false,
+			'hide_title' => empty( $attributes['title'] ),
 			'show_events' => $has_events,
 			'show_events_description' => $has_events && $attributes['show_description'],
 		];
@@ -191,6 +198,9 @@ class Meetup_Widgets_Blocks {
 
 		$has_events = count( $events ) > 0;
 
+		if ( is_array( $attributes['title'] ) ) {
+			$attributes['title'] = join( ' ', $attributes['title'] );
+		}
 		$vars = [
 			'attributes' => $attributes,
 			'events' => $events,

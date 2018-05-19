@@ -14,10 +14,11 @@ const runTemplate = require( TEMPLATE_DIRECTORY + '/meetup-list.hbs' );
  */
 const { __ } = wp.i18n;
 const { Component } = wp.element;
-const { RichText, InspectorControls } = wp.blocks;
+const { RichText, InspectorControls } = wp.editor;
 const {
 	Dashicon,
 	Placeholder,
+	PanelBody,
 	RangeControl,
 	Spinner,
 	TextControl,
@@ -30,7 +31,6 @@ class UserListBlock extends Component {
 		super( ...arguments );
 		this.onChangeEditable = this.onChangeEditable.bind( this );
 		this.onChangeToggle = this.onChangeToggle.bind( this );
-		this.onFocus = this.onFocus.bind( this );
 		this.renderEventsList = this.renderEventsList.bind( this );
 	}
 
@@ -45,20 +45,13 @@ class UserListBlock extends Component {
 			} );
 	}
 
-	onFocus( field ) {
-		return focus => this.props.setFocus( { ...focus, editable: field } );
-	}
-
 	renderEventsList() {
 		const { attributes, events = {} } = this.props;
 		const { isLoading, error, data = [] } = events;
 
 		/* eslint-disable yoda */
 		if ( error && error.status > 200 ) {
-			let message = __(
-				'There was an error loading the API for this block',
-				'meetup-widgets'
-			);
+			let message = __( 'There was an error loading the API for this block', 'meetup-widgets' );
 			if ( error.resposeJSON && error.resposeJSON.message ) {
 				message = error.resposeJSON.message;
 			}
@@ -73,9 +66,7 @@ class UserListBlock extends Component {
 
 		if ( isLoading ) {
 			return (
-				<Placeholder
-					icon="editor-list"
-					label={ __( 'Fetching Events…', 'meetup-widgets' ) }>
+				<Placeholder icon="editor-list" label={ __( 'Fetching Events…', 'meetup-widgets' ) }>
 					<Spinner />
 				</Placeholder>
 			);
@@ -84,63 +75,57 @@ class UserListBlock extends Component {
 		const vars = {
 			attributes,
 			events: data,
-			hide_title: true, // title is <Editable /> here, so we hide it in the final template.
+			hide_title: true, // title is editable here, so we hide it in the final template.
 			show_events: !! data.length,
-			show_events_description:
-				!! data.length && attributes.show_description,
+			show_events_description: !! data.length && attributes.show_description,
 		};
 
 		return { __html: runTemplate( vars ) };
 	}
 
 	render() {
-		const { attributes, focus } = this.props;
-		const focusedEditable = focus ? focus.editable || 'title' : null;
+		const { attributes, isSelected } = this.props;
 
-		const controls = focus && (
+		const controls = (
 			<InspectorControls key="meetup-inspector">
-				<ToggleControl
-					label={ __( 'Show description', 'meetup-widgets' ) }
-					checked={ !! attributes.show_description }
-					onChange={ this.onChangeToggle( 'show_description' ) }
-				/>
-				<RangeControl
-					label={ __( 'Number of events to show', 'meetup-widgets' ) }
-					value={ attributes.per_page }
-					onChange={ this.onChangeEditable( 'per_page' ) }
-					min={ 1 }
-					max={ 15 }
-				/>
-				<TextControl
-					label={ __(
-						'Text to display when there are no upcoming events',
-						'meetup-widgets'
-					) }
-					value={ attributes.placeholder }
-					onChange={ this.onChangeEditable( 'placeholder' ) }
-				/>
+				<PanelBody title={ __( 'Meetup.com Settings', 'meetup-widgets' ) }>
+					<ToggleControl
+						label={ __( 'Show description', 'meetup-widgets' ) }
+						checked={ !! attributes.show_description }
+						onChange={ this.onChangeToggle( 'show_description' ) }
+					/>
+					<RangeControl
+						label={ __( 'Number of events to show', 'meetup-widgets' ) }
+						value={ attributes.per_page }
+						onChange={ this.onChangeEditable( 'per_page' ) }
+						min={ 1 }
+						max={ 15 }
+					/>
+					<TextControl
+						label={ __( 'Text to display when there are no upcoming events', 'meetup-widgets' ) }
+						value={ attributes.placeholder }
+						onChange={ this.onChangeEditable( 'placeholder' ) }
+					/>
+				</PanelBody>
 			</InspectorControls>
 		);
 
 		const list = this.renderEventsList();
+		const { title } = attributes;
 
 		return [
 			controls,
 			<div className="meetup-widgets" key="meetup-display">
-				<RichText
-					tagName="h3"
-					placeholder={ __( 'My Events', 'meetup-widgets' ) }
-					onChange={ this.onChangeEditable( 'title' ) }
-					focus={ 'title' === focusedEditable }
-					onFocus={ this.onFocus( 'title' ) }
-					className="meetup-widgets-title"
-					value={ attributes.title }
-				/>
-				{ list.__html ? (
-					<div dangerouslySetInnerHTML={ this.renderEventsList() } />
-				) : (
-					list
+				{ ( ( title && title.length > 0 ) || isSelected ) && (
+					<RichText
+						tagName="h3"
+						placeholder={ __( 'My Events', 'meetup-widgets' ) }
+						onChange={ this.onChangeEditable( 'title' ) }
+						className="meetup-widgets-title"
+						value={ title }
+					/>
 				) }
+				{ list.__html ? <div dangerouslySetInnerHTML={ this.renderEventsList() } /> : list }
 			</div>,
 		];
 	}
